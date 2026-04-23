@@ -1,0 +1,62 @@
+name: Escrow Monitor — Atualização Diária
+
+on:
+  schedule:
+    - cron: '0 11 * * *'  # 08:00 BRT (UTC-3)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Instalar dependências
+        run: pip install -r requirements.txt
+
+      - name: Configurar credenciais Gmail
+        run: |
+          mkdir -p config
+          echo '${{ secrets.GMAIL_CREDENTIALS }}' > config/credentials.json
+          echo '${{ secrets.GMAIL_TOKEN }}' > config/token.json
+
+      - name: Executar monitor
+        run: python escrow_monitor.py
+
+      - name: Commit e push
+        run: |
+          git config user.name "Escrow Monitor Bot"
+          git config user.email "bot@liqi.com.br"
+          git add data/events.json index.html
+          git diff --cached --quiet || git commit -m "Atualização diária — $(date -u +%Y-%m-%d)"
+          git push
+
+  deploy:
+    needs: update
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/configure-pages@v4
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

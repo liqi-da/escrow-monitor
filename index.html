@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escrow Monitor — Liqi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --preto: #212121;
+      --azul: #0247fe;
+      --rosa: #f556e9;
+      --azul-claro: #5cd5ee;
+      --bg-light: #f2eee7;
+      --bg-card: #ffffff;
+      --cinza-texto: #606d7f;
+      --cinza-borda: #e8eaed;
+      --verde: #22c55e;
+      --vermelho: #ef4444;
+      --amarelo: #f59e0b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', 'Work Sans', sans-serif;
+      background: var(--bg-light);
+      color: var(--preto);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: var(--preto);
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ffffff;
+    }
+    .header .subtitle {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.85rem;
+      color: #999;
+      letter-spacing: -0.025em;
+    }
+    .last-update {
+      font-size: 0.8rem;
+      color: #888;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Cards resumo */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--cinza-borda);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card-label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--cinza-texto);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .card-value {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+    .card-value.bloqueado { color: var(--vermelho); }
+    .card-value.desbloqueado { color: var(--verde); }
+    .card-value.transferido { color: var(--azul); }
+    .card-value.saldo {
+      background: linear-gradient(45deg, var(--azul), var(--rosa));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .card-sub {
+      font-size: 0.8rem;
+      color: var(--cinza-texto);
+      margin-top: 0.25rem;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid var(--cinza-borda);
+    }
+    .tab {
+      padding: 0.75rem 1.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--cinza-texto);
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s;
+    }
+    .tab:hover { color: var(--preto); }
+    .tab.active {
+      color: var(--azul);
+      border-bottom-color: var(--azul);
+    }
+
+    /* Tab content */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Tables */
+    .table-wrapper {
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--cinza-borda);
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    thead th {
+      background: #f8f9fa;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cinza-texto);
+      text-align: left;
+      border-bottom: 1px solid var(--cinza-borda);
+    }
+    tbody td {
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    tbody tr:hover {
+      background: #fafafa;
+    }
+    .text-right { text-align: right; }
+    .font-mono { font-family: 'SF Mono', 'Cascadia Code', monospace; font-size: 0.8rem; }
+    .font-bold { font-weight: 600; }
+
+    /* Status badges */
+    .status-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .status-bloqueado { background: #fef2f2; color: var(--vermelho); }
+    .status-desbloqueado { background: #f0fdf4; color: var(--verde); }
+    .status-transferido { background: #eff6ff; color: var(--azul); }
+
+    .tipo-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+    .tipo-bloqueio { background: #fef2f2; color: var(--vermelho); }
+    .tipo-desbloqueio { background: #f0fdf4; color: var(--verde); }
+    .tipo-transferencia { background: #eff6ff; color: var(--azul); }
+
+    /* Search */
+    .search-bar {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .search-input {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--cinza-borda);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--azul);
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.75rem;
+      color: var(--cinza-texto);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .card-value { font-size: 1.25rem; }
+      .table-wrapper { overflow-x: auto; }
+      table { min-width: 700px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="75 170 1780 745"
+           width="100" role="img" aria-label="Liqi Digital Assets">
+        <defs><style>.liqi{fill:#ffffff;}</style></defs>
+        <path class="liqi" d="M86.72,279.97c-3.33,2.71-5.31,6.74-5.39,11.03l1.46,267.51c.28,67.37,54.97,121.84,122.34,121.84h1.3c25.89.02,46.91-20.92,46.98-46.81h0c0-25.83-20.86-46.8-46.69-46.94h0c-12.98,0-23.51-10.51-23.53-23.49l-.54-203.1c0-46.48-50.16-84.1-80.29-84.1-6.52.04-10.7,0-15.63,4.05Z"/>
+        <path class="liqi" d="M344.71,679.81h0c-27.54,0-49.86-22.33-49.86-49.86h0v-230.89c0-12.14,9.84-21.99,21.99-21.99h0c42.96,0,77.79,34.83,77.79,77.79,0,.07,0,.14,0,.21v175.09c-.12,27.47-22.43,49.68-49.91,49.66Z"/>
+        <path class="liqi" d="M862.75,679.81h0c-27.54,0-49.87-22.33-49.87-49.86h0v-230.89c0-12.14,9.84-21.99,21.99-21.99h0c42.96.05,77.75,34.91,77.7,77.87,0,.04,0,.08,0,.13v175.09c-.11,27.44-22.38,49.63-49.82,49.66Z"/>
+        <path class="liqi" d="M760.74,522.86l-.13-2.17c0-85.65-69.42-155.09-155.07-155.11h-1.8c-86.62-1.79-158.28,66.98-160.07,153.59-1.75,84.66,64.02,155.43,148.58,159.89,15.25.19,30.47-1.5,45.31-5.06,8.68-1.87,18.66-4.94,23.11-6.37v42.27h0c0,4.02.53,7.9,1.42,11.64,5.85,37.13,37.88,65.56,76.66,65.61,12.14,0,21.99-9.84,21.99-21.99v-104.24c0-1.76-.1-3.5-.27-5.21.18-59.38.27-132.86.27-132.86ZM603.84,584.63h-.09c-34.3,0-62.11-27.81-62.11-62.11s27.81-62.11,62.11-62.11,62.06,27.76,62.11,62.03c.05,34.3-27.73,62.15-62.03,62.2Z"/>
+        <path class="liqi" d="M1399.58,181.15l-253.81,146.53c-23.62,13.64-38.17,38.83-38.17,66.1v293.07c0,27.27,14.55,52.47,38.17,66.1l253.81,146.53c23.62,13.64,52.71,13.63,76.33,0l127.21-73.49c11.01-6.36,17.79-18.1,17.79-30.81v-109.65c0-15.97,8.52-30.74,22.36-38.72l106.83-61.63c11.01-6.36,17.79-18.1,17.79-30.81v-160.59c0-27.27-14.55-52.47-38.17-66.1l-253.8-146.53c-23.62-13.64-52.71-13.64-76.33,0ZM1436.77,570.06v186.83c0,22.23-24.06,36.12-43.31,25.01l-161.81-93.42c-16.09-9.29-26-26.45-26-45.03v-206.83c0-18.57,9.91-35.74,26-45.03l179.13-103.42c16.09-9.29,35.9-9.29,51.99,0l161.8,93.42c19.25,11.11,19.25,38.9,0,50.02l-161.8,93.42c-16.09,9.29-25.99,26.45-25.99,45.02Z"/>
+        <path class="liqi" d="M1685.14,827.63v-108.58c0-17.11,9.13-32.92,23.95-41.48l98.21-56.7c14.28-8.24,32.13,2.06,32.13,18.55v113.41c0,17.11-9.13,32.92-23.95,41.48l-94.04,54.29c-16.14,9.32-36.3-2.33-36.3-20.96Z"/>
+      </svg>
+      <div>
+        <h1>Escrow Monitor</h1>
+        <span class="subtitle">Bloqueios Judiciais — CA$A$ BAHIA I</span>
+      </div>
+    </div>
+    <span class="last-update">Atualizado em 22/04/2026 21:30</span>
+  </header>
+
+  <div class="container">
+    <!-- Cards resumo -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-label">Total Bloqueado</div>
+        <div class="card-value bloqueado">R$ 4.103.140,02</div>
+        <div class="card-sub">48 processos</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Total Desbloqueado</div>
+        <div class="card-value desbloqueado">R$ 897.825,61</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Total Transferido</div>
+        <div class="card-value transferido">R$ 1.969.221,98</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Saldo Bloqueado Atual</div>
+        <div class="card-value saldo">R$ 1.236.092,43</div>
+        <div class="card-sub">16 processos ativos</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" data-tab="processos">Processos</button>
+      <button class="tab" data-tab="timeline">Timeline</button>
+      <button class="tab" data-tab="transferencias">Transferências</button>
+    </div>
+
+    <!-- Processos -->
+    <div id="processos" class="tab-content active">
+      <div class="search-bar">
+        <input type="text" class="search-input" id="search-processos"
+               placeholder="Buscar por número do processo ou vara...">
+      </div>
+      <div class="table-wrapper">
+        <table id="table-processos">
+          <thead>
+            <tr>
+              <th>Processo</th>
+              <th>Vara</th>
+              <th>Status</th>
+              <th class="text-right">Bloqueado</th>
+              <th class="text-right">Desbloqueado</th>
+              <th class="text-right">Transferido</th>
+              <th class="text-right">Saldo</th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr>
+          <td class="font-mono">00009873020175100101</td>
+          <td>000016355</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 466.290,14</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 466.290,14</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10008640920215020065</td>
+          <td>000018367</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 402.120,48</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 402.120,48</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00104213420235030099</td>
+          <td>000014045</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 286.310,80</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 286.310,80</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10005548720205020016</td>
+          <td>000018018</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 80.000,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 80.000,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00006679620255100101</td>
+          <td>000016355</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 59.548,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 59.548,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00176633420215160008</td>
+          <td>000012657</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 56.752,27</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 56.752,27</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10001852220215020481</td>
+          <td>000017979</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 36.860,43</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 36.860,43</td>
+        </tr>
+        <tr>
+          <td class="font-mono">01011458220245010462</td>
+          <td>000008817</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 19.805,59</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 19.805,59</td>
+        </tr>
+        <tr>
+          <td class="font-mono">50170751120248130479</td>
+          <td>000034923</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 12.711,47</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 12.711,47</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08076183320258190211</td>
+          <td>000009646</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 5.768,88</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 5.768,88</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08199592120258190008</td>
+          <td>000008466</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 4.742,29</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 4.742,29</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08050001820258190211</td>
+          <td>000009646</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 2.768,30</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 2.768,30</td>
+        </tr>
+        <tr>
+          <td class="font-mono">07129279020258070007</td>
+          <td>000044811</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 2.339,70</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 2.339,70</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08714030320258190038</td>
+          <td>000012300</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 1.529,50</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 1.529,50</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00006425420158172990</td>
+          <td>000027218</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 735,52</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 735,52</td>
+        </tr>
+        <tr>
+          <td class="font-mono">01305119720258050001</td>
+          <td>000037332</td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td class="text-right">R$ 244,99</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 244,99</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00050584520258050146</td>
+          <td>000037953</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 4.649,49</td>
+          <td class="text-right">R$ 4.649,49</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00007728120255060005</td>
+          <td>000023019</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 321.187,13</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 321.187,13</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08547667420258190038</td>
+          <td>000012316</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 1.549,65</td>
+          <td class="text-right">R$ 1.549,65</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08556717920258190038</td>
+          <td>000012300</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 6.500,00</td>
+          <td class="text-right">R$ 6.500,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08533706220258190038</td>
+          <td>000012316</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 2.176,64</td>
+          <td class="text-right">R$ 2.176,64</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10020354320255020717</td>
+          <td>000017869</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 49.650,23</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 49.650,23</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08499154320258190021</td>
+          <td>000007885</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 4.262,41</td>
+          <td class="text-right">R$ 4.262,41</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00001304520235100821</td>
+          <td>000016328</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 51.893,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 51.893,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00010436520235170131</td>
+          <td>000016665</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 108.787,21</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 108.787,21</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00002825520245080129</td>
+          <td>000007398</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 375,64</td>
+          <td class="text-right">R$ 375,64</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10009298920225020381</td>
+          <td>000016991</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 10.896,82</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 10.896,82</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00001659520235090024</td>
+          <td>000024447</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 341.664,90</td>
+          <td class="text-right">R$ 341.664,90</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00245162120225240002</td>
+          <td>000013363</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 346,13</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 346,13</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10010454720245020342</td>
+          <td>000017493</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 315.000,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 315.000,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00012494520235070006</td>
+          <td>000011578</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 252.660,70</td>
+          <td class="text-right">R$ 252.660,70</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00008778920225100801</td>
+          <td>000016133</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 22.465,93</td>
+          <td class="text-right">R$ 22.465,93</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00007346420215100016</td>
+          <td>000016279</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 1.770,34</td>
+          <td class="text-right">R$ 1.770,34</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00009395020255180010</td>
+          <td>000024030</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 673,23</td>
+          <td class="text-right">R$ 673,23</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10015429020255020612</td>
+          <td>000017970</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 202.272,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 202.272,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10005573520215020007</td>
+          <td>000017151</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 31.813,25</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 31.813,25</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00005768420255050023</td>
+          <td>000011945</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 115.248,20</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 115.248,20</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10016642720225020057</td>
+          <td>000017837</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 2.800,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 2.800,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10001572920235020402</td>
+          <td>000016936</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 205.289,17</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 205.289,17</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10011876320245020241</td>
+          <td>000017923</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 36.500,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 36.500,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10006988220215020321</td>
+          <td>000018002</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 17.018,10</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 17.018,10</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00109388620225150116</td>
+          <td>000020491</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 34.649,51</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 34.649,51</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10011635220235020473</td>
+          <td>000017517</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 249.392,02</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 249.392,02</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">50233363920258080012</td>
+          <td>000030580</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 2.200,00</td>
+          <td class="text-right">R$ 2.200,00</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10010853720255020231</td>
+          <td>000017849</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 258,30</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 258,30</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00104228420225180083</td>
+          <td>000024018</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 64.055,85</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right">R$ 64.055,85</td>
+          <td class="text-right font-bold">R$ 0,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00107106220245030153</td>
+          <td>000014413</td>
+          <td><span class="status-badge status-desbloqueado">DESBLOQUEADO</span></td>
+          <td class="text-right">R$ 52.355,81</td>
+          <td class="text-right">R$ 104.711,62</td>
+          <td class="text-right">R$ 0,00</td>
+          <td class="text-right font-bold">R$ -52.355,81</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00003835720255060018</td>
+          <td>000023077</td>
+          <td><span class="status-badge status-transferido">TRANSFERIDO</span></td>
+          <td class="text-right">R$ 154.250,00</td>
+          <td class="text-right">R$ 152.165,06</td>
+          <td class="text-right">R$ 152.165,06</td>
+          <td class="text-right font-bold">R$ -150.080,12</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div id="timeline" class="tab-content">
+      <div class="search-bar">
+        <input type="text" class="search-input" id="search-timeline"
+               placeholder="Buscar por processo, tipo ou data...">
+      </div>
+      <div class="table-wrapper">
+        <table id="table-timeline">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Processo</th>
+              <th>Vara</th>
+              <th class="text-right">Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr>
+          <td>2026-04-17</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">50233363920258080012</td>
+          <td>000030580</td>
+          <td class="text-right">R$ 2.200,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-17</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10010853720255020231</td>
+          <td>000017849</td>
+          <td class="text-right">R$ 258,30</td>
+        </tr>
+        <tr>
+          <td>2026-04-17</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">00104228420225180083</td>
+          <td>000024018</td>
+          <td class="text-right">R$ 64.055,85</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">00109388620225150116</td>
+          <td>000020491</td>
+          <td class="text-right">R$ 34.649,51</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">50233363920258080012</td>
+          <td>000030580</td>
+          <td class="text-right">R$ 2.200,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00104213420235030099</td>
+          <td>000014045</td>
+          <td class="text-right">R$ 286.310,80</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">08199592120258190008</td>
+          <td>000008466</td>
+          <td class="text-right">R$ 4.742,29</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00176633420215160008</td>
+          <td>000012657</td>
+          <td class="text-right">R$ 56.752,27</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10010853720255020231</td>
+          <td>000017849</td>
+          <td class="text-right">R$ 258,30</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">01305119720258050001</td>
+          <td>000037332</td>
+          <td class="text-right">R$ 244,99</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">08050001820258190211</td>
+          <td>000009646</td>
+          <td class="text-right">R$ 2.768,30</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">08076183320258190211</td>
+          <td>000009646</td>
+          <td class="text-right">R$ 5.768,88</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00104228420225180083</td>
+          <td>000024018</td>
+          <td class="text-right">R$ 64.055,85</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00107106220245030153</td>
+          <td>000014413</td>
+          <td class="text-right">R$ 52.355,81</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00002825520245080129</td>
+          <td>000007398</td>
+          <td class="text-right">R$ 375,64</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00003835720255060018</td>
+          <td>000023077</td>
+          <td class="text-right">R$ 152.165,06</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">00005768420255050023</td>
+          <td>000011945</td>
+          <td class="text-right">R$ 115.248,20</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10006988220215020321</td>
+          <td>000018002</td>
+          <td class="text-right">R$ 17.018,10</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">00001304520235100821</td>
+          <td>000016328</td>
+          <td class="text-right">R$ 51.893,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">00003835720255060018</td>
+          <td>000023077</td>
+          <td class="text-right">R$ 152.165,06</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10001572920235020402</td>
+          <td>000016936</td>
+          <td class="text-right">R$ 205.289,17</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00107106220245030153</td>
+          <td>000014413</td>
+          <td class="text-right">R$ 52.355,81</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">08556717920258190038</td>
+          <td>000012300</td>
+          <td class="text-right">R$ 6.500,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00050584520258050146</td>
+          <td>000037953</td>
+          <td class="text-right">R$ 4.649,49</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">00245162120225240002</td>
+          <td>000013363</td>
+          <td class="text-right">R$ 346,13</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10016642720225020057</td>
+          <td>000017837</td>
+          <td class="text-right">R$ 2.800,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10011635220235020473</td>
+          <td>000017517</td>
+          <td class="text-right">R$ 249.392,02</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10005573520215020007</td>
+          <td>000017151</td>
+          <td class="text-right">R$ 31.813,25</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10011876320245020241</td>
+          <td>000017923</td>
+          <td class="text-right">R$ 36.500,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00001659520235090024</td>
+          <td>000024447</td>
+          <td class="text-right">R$ 341.664,90</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00008778920225100801</td>
+          <td>000016133</td>
+          <td class="text-right">R$ 22.465,93</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00009395020255180010</td>
+          <td>000024030</td>
+          <td class="text-right">R$ 673,23</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">08499154320258190021</td>
+          <td>000007885</td>
+          <td class="text-right">R$ 4.262,41</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00007346420215100016</td>
+          <td>000016279</td>
+          <td class="text-right">R$ 1.770,34</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00012494520235070006</td>
+          <td>000011578</td>
+          <td class="text-right">R$ 252.660,70</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10010454720245020342</td>
+          <td>000017493</td>
+          <td class="text-right">R$ 315.000,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10009298920225020381</td>
+          <td>000016991</td>
+          <td class="text-right">R$ 10.896,82</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10015429020255020612</td>
+          <td>000017970</td>
+          <td class="text-right">R$ 202.272,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">00010436520235170131</td>
+          <td>000016665</td>
+          <td class="text-right">R$ 108.787,21</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">08533706220258190038</td>
+          <td>000012316</td>
+          <td class="text-right">R$ 2.176,64</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">08547667420258190038</td>
+          <td>000012316</td>
+          <td class="text-right">R$ 1.549,65</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">10020354320255020717</td>
+          <td>000017869</td>
+          <td class="text-right">R$ 49.650,23</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERÊNCIA</span></td>
+          <td class="font-mono">00007728120255060005</td>
+          <td>000023019</td>
+          <td class="text-right">R$ 321.187,13</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00003835720255060018</td>
+          <td>000023077</td>
+          <td class="text-right">R$ 154.250,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10008640920215020065</td>
+          <td>000018367</td>
+          <td class="text-right">R$ 402.120,48</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10005573520215020007</td>
+          <td>000017151</td>
+          <td class="text-right">R$ 31.813,25</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00107106220245030153</td>
+          <td>000014413</td>
+          <td class="text-right">R$ 52.355,81</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00005768420255050023</td>
+          <td>000011945</td>
+          <td class="text-right">R$ 115.248,20</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10016642720225020057</td>
+          <td>000017837</td>
+          <td class="text-right">R$ 2.800,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">01011458220245010462</td>
+          <td>000008817</td>
+          <td class="text-right">R$ 19.805,59</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10001572920235020402</td>
+          <td>000016936</td>
+          <td class="text-right">R$ 205.289,17</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10011876320245020241</td>
+          <td>000017923</td>
+          <td class="text-right">R$ 36.500,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10006988220215020321</td>
+          <td>000018002</td>
+          <td class="text-right">R$ 17.018,10</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00109388620225150116</td>
+          <td>000020491</td>
+          <td class="text-right">R$ 34.649,51</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10011635220235020473</td>
+          <td>000017517</td>
+          <td class="text-right">R$ 249.392,02</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00002825520245080129</td>
+          <td>000007398</td>
+          <td class="text-right">R$ 375,64</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10009298920225020381</td>
+          <td>000016991</td>
+          <td class="text-right">R$ 10.896,82</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00001659520235090024</td>
+          <td>000024447</td>
+          <td class="text-right">R$ 341.664,90</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00245162120225240002</td>
+          <td>000013363</td>
+          <td class="text-right">R$ 346,13</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10010454720245020342</td>
+          <td>000017493</td>
+          <td class="text-right">R$ 315.000,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10005548720205020016</td>
+          <td>000018018</td>
+          <td class="text-right">R$ 80.000,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10001852220215020481</td>
+          <td>000017979</td>
+          <td class="text-right">R$ 36.860,43</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00012494520235070006</td>
+          <td>000011578</td>
+          <td class="text-right">R$ 252.660,70</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00008778920225100801</td>
+          <td>000016133</td>
+          <td class="text-right">R$ 22.465,93</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00007346420215100016</td>
+          <td>000016279</td>
+          <td class="text-right">R$ 1.770,34</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00009395020255180010</td>
+          <td>000024030</td>
+          <td class="text-right">R$ 673,23</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10015429020255020612</td>
+          <td>000017970</td>
+          <td class="text-right">R$ 202.272,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-08</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">07129279020258070007</td>
+          <td>000044811</td>
+          <td class="text-right">R$ 2.339,70</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00050584520258050146</td>
+          <td>000037953</td>
+          <td class="text-right">R$ 4.649,49</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00006425420158172990</td>
+          <td>000027218</td>
+          <td class="text-right">R$ 735,52</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00007728120255060005</td>
+          <td>000023019</td>
+          <td class="text-right">R$ 321.187,13</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">08547667420258190038</td>
+          <td>000012316</td>
+          <td class="text-right">R$ 1.549,65</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">08556717920258190038</td>
+          <td>000012300</td>
+          <td class="text-right">R$ 6.500,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00006679620255100101</td>
+          <td>000016355</td>
+          <td class="text-right">R$ 59.548,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">08533706220258190038</td>
+          <td>000012316</td>
+          <td class="text-right">R$ 2.176,64</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10020354320255020717</td>
+          <td>000017869</td>
+          <td class="text-right">R$ 49.650,23</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00009873020175100101</td>
+          <td>000016355</td>
+          <td class="text-right">R$ 466.290,14</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">08499154320258190021</td>
+          <td>000007885</td>
+          <td class="text-right">R$ 4.262,41</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">08714030320258190038</td>
+          <td>000012300</td>
+          <td class="text-right">R$ 1.529,50</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00001304520235100821</td>
+          <td>000016328</td>
+          <td class="text-right">R$ 51.893,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">50170751120248130479</td>
+          <td>000034923</td>
+          <td class="text-right">R$ 12.711,47</td>
+        </tr>
+        <tr>
+          <td>2026-04-07</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00010436520235170131</td>
+          <td>000016665</td>
+          <td class="text-right">R$ 108.787,21</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Transferências -->
+    <div id="transferencias" class="tab-content">
+      <div class="search-bar">
+        <input type="text" class="search-input" id="search-transferencias"
+               placeholder="Buscar por processo ou data...">
+      </div>
+      <div class="table-wrapper">
+        <table id="table-transferencias">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Processo</th>
+              <th>Vara</th>
+              <th class="text-right">Valor</th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr>
+          <td>2026-04-17</td>
+          <td class="font-mono">10010853720255020231</td>
+          <td>000017849</td>
+          <td class="text-right">R$ 258,30</td>
+        </tr>
+        <tr>
+          <td>2026-04-17</td>
+          <td class="font-mono">00104228420225180083</td>
+          <td>000024018</td>
+          <td class="text-right">R$ 64.055,85</td>
+        </tr>
+        <tr>
+          <td>2026-04-15</td>
+          <td class="font-mono">00109388620225150116</td>
+          <td>000020491</td>
+          <td class="text-right">R$ 34.649,51</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td class="font-mono">00005768420255050023</td>
+          <td>000011945</td>
+          <td class="text-right">R$ 115.248,20</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td class="font-mono">10006988220215020321</td>
+          <td>000018002</td>
+          <td class="text-right">R$ 17.018,10</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td class="font-mono">00001304520235100821</td>
+          <td>000016328</td>
+          <td class="text-right">R$ 51.893,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td class="font-mono">00003835720255060018</td>
+          <td>000023077</td>
+          <td class="text-right">R$ 152.165,06</td>
+        </tr>
+        <tr>
+          <td>2026-04-14</td>
+          <td class="font-mono">10001572920235020402</td>
+          <td>000016936</td>
+          <td class="text-right">R$ 205.289,17</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td class="font-mono">00245162120225240002</td>
+          <td>000013363</td>
+          <td class="text-right">R$ 346,13</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td class="font-mono">10016642720225020057</td>
+          <td>000017837</td>
+          <td class="text-right">R$ 2.800,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td class="font-mono">10011635220235020473</td>
+          <td>000017517</td>
+          <td class="text-right">R$ 249.392,02</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td class="font-mono">10005573520215020007</td>
+          <td>000017151</td>
+          <td class="text-right">R$ 31.813,25</td>
+        </tr>
+        <tr>
+          <td>2026-04-13</td>
+          <td class="font-mono">10011876320245020241</td>
+          <td>000017923</td>
+          <td class="text-right">R$ 36.500,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td class="font-mono">10010454720245020342</td>
+          <td>000017493</td>
+          <td class="text-right">R$ 315.000,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td class="font-mono">10009298920225020381</td>
+          <td>000016991</td>
+          <td class="text-right">R$ 10.896,82</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td class="font-mono">10015429020255020612</td>
+          <td>000017970</td>
+          <td class="text-right">R$ 202.272,00</td>
+        </tr>
+        <tr>
+          <td>2026-04-10</td>
+          <td class="font-mono">00010436520235170131</td>
+          <td>000016665</td>
+          <td class="text-right">R$ 108.787,21</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td class="font-mono">10020354320255020717</td>
+          <td>000017869</td>
+          <td class="text-right">R$ 49.650,23</td>
+        </tr>
+        <tr>
+          <td>2026-04-09</td>
+          <td class="font-mono">00007728120255060005</td>
+          <td>000023019</td>
+          <td class="text-right">R$ 321.187,13</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    Liqi Digital Assets — Tecnologia que conecta
+  </footer>
+
+  <script>
+    // Tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+
+    // Search
+    function setupSearch(inputId, tableId) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      input.addEventListener('input', () => {
+        const term = input.value.toLowerCase();
+        const rows = document.querySelectorAll('#' + tableId + ' tbody tr');
+        rows.forEach(row => {
+          row.style.display = row.textContent.toLowerCase().includes(term) ? '' : 'none';
+        });
+      });
+    }
+    setupSearch('search-processos', 'table-processos');
+    setupSearch('search-timeline', 'table-timeline');
+    setupSearch('search-transferencias', 'table-transferencias');
+  </script>
+</body>
+</html>
