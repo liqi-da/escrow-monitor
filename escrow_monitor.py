@@ -637,7 +637,7 @@ def generate_html(data):
         <span class="subtitle">Bloqueios Judiciais — CASAS BAHIA I</span>
       </div>
     </div>
-    <span class="last-update">Atualizado em {last_update}</span>
+    <span class="last-update">Atualizado até {last_update}</span>
   </header>
 
   <div class="container">
@@ -812,7 +812,12 @@ def main():
 
     # Computa resumo
     data["summary"] = compute_summary(data["events"])
-    data["last_update"] = datetime.now().strftime("%d/%m/%Y %H:%M")
+    datas_efetivacao = [ev["data_efetivacao"] for ev in data["events"] if ev.get("data_efetivacao")]
+    if datas_efetivacao:
+        ultima = max(datas_efetivacao)
+        data["last_update"] = datetime.strptime(ultima, "%Y-%m-%d").strftime("%d/%m/%Y")
+    else:
+        data["last_update"] = datetime.now().strftime("%d/%m/%Y")
 
     # Salva JSON
     save_data(data)
