@@ -10386,17 +10386,43 @@
       "data_email": "Thu, 25 Jun 2026 08:02:02 +0000",
       "contrato": "CASAS BAHIA I",
       "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19f02f31704b37f2",
+      "tipo": "DESBLOQUEIO",
+      "processo": "08177292620258205004",
+      "vara": "000039433",
+      "ag_conta": "8541/83571-9",
+      "valor": 5107.95,
+      "valor_display": "R$ 5.107,95",
+      "data_efetivacao": "2026-06-24",
+      "data_email": "Fri, 26 Jun 2026 08:01:51 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - DESBLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19f02f2bee26e11e",
+      "tipo": "TRANSFERÊNCIA",
+      "processo": "01001855620265010204",
+      "vara": "000008908",
+      "ag_conta": "8541/83571-9",
+      "valor": 3250.0,
+      "valor_display": "R$ 3.250,00",
+      "data_efetivacao": "2026-06-24",
+      "data_email": "Fri, 26 Jun 2026 08:01:28 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - TRANSFERÊNCIA JUDICIAL"
     }
   ],
-  "last_update": "23/06/2026",
+  "last_update": "24/06/2026",
   "summary": {
     "total_bloqueado": 48117779.45,
-    "total_desbloqueado": 12017414.77,
-    "total_transferido": 26203196.88,
-    "saldo_bloqueado_atual": 9897167.8,
-    "total_eventos": 799,
+    "total_desbloqueado": 12022522.72,
+    "total_transferido": 26206446.88,
+    "saldo_bloqueado_atual": 9888809.85,
+    "total_eventos": 801,
     "total_processos": 437,
-    "processos_ativos": 82,
+    "processos_ativos": 80,
     "processos": [
       {
         "processo": "00112010320215150101",
@@ -11524,24 +11550,6 @@
         "transferencias": []
       },
       {
-        "processo": "08177292620258205004",
-        "vara": "000039433",
-        "status": "BLOQUEADO",
-        "saldo_bloqueado": 5107.95,
-        "total_bloqueado": 5107.95,
-        "total_desbloqueado": 0,
-        "total_transferido": 0,
-        "bloqueios": [
-          {
-            "valor": 5107.95,
-            "data": "2026-06-19",
-            "id": "19ef37fd7a2c35e1"
-          }
-        ],
-        "desbloqueios": [],
-        "transferencias": []
-      },
-      {
         "processo": "00046142720248160021",
         "vara": "000031718",
         "status": "BLOQUEADO",
@@ -11727,24 +11735,6 @@
             "valor": 3361.09,
             "data": "2026-06-19",
             "id": "19ef37f7a99a803c"
-          }
-        ],
-        "desbloqueios": [],
-        "transferencias": []
-      },
-      {
-        "processo": "01001855620265010204",
-        "vara": "000008908",
-        "status": "BLOQUEADO",
-        "saldo_bloqueado": 3250.0,
-        "total_bloqueado": 3250.0,
-        "total_desbloqueado": 0,
-        "total_transferido": 0,
-        "bloqueios": [
-          {
-            "valor": 3250.0,
-            "data": "2026-06-16",
-            "id": "19ed9bff38c21220"
           }
         ],
         "desbloqueios": [],
@@ -19783,6 +19773,30 @@
         "transferencias": []
       },
       {
+        "processo": "01001855620265010204",
+        "vara": "000008908",
+        "status": "TRANSFERIDO",
+        "saldo_bloqueado": 0.0,
+        "total_bloqueado": 3250.0,
+        "total_desbloqueado": 0,
+        "total_transferido": 3250.0,
+        "bloqueios": [
+          {
+            "valor": 3250.0,
+            "data": "2026-06-16",
+            "id": "19ed9bff38c21220"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": [
+          {
+            "valor": 3250.0,
+            "data": "2026-06-24",
+            "id": "19f02f2bee26e11e"
+          }
+        ]
+      },
+      {
         "processo": "00067833020258050256",
         "vara": "000037240",
         "status": "DESBLOQUEADO",
@@ -19925,6 +19939,30 @@
             "id": "19ee40cde83dd31a"
           }
         ]
+      },
+      {
+        "processo": "08177292620258205004",
+        "vara": "000039433",
+        "status": "DESBLOQUEADO",
+        "saldo_bloqueado": 0.0,
+        "total_bloqueado": 5107.95,
+        "total_desbloqueado": 5107.95,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 5107.95,
+            "data": "2026-06-19",
+            "id": "19ef37fd7a2c35e1"
+          }
+        ],
+        "desbloqueios": [
+          {
+            "valor": 5107.95,
+            "data": "2026-06-24",
+            "id": "19f02f31704b37f2"
+          }
+        ],
+        "transferencias": []
       },
       {
         "processo": "50283498020258080024",
