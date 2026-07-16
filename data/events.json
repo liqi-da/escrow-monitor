@@ -11543,17 +11543,30 @@
       "data_email": "Wed, 15 Jul 2026 08:01:02 +0000",
       "contrato": "CASAS BAHIA I",
       "subject": "Escrow Advanced - TRANSFERÊNCIA JUDICIAL"
+    },
+    {
+      "id": "19f69f1a590cfce2",
+      "tipo": "BLOQUEIO",
+      "processo": "00110295520255030004",
+      "vara": "000015914",
+      "ag_conta": "8541/83571-9",
+      "valor": 534981.96,
+      "valor_display": "R$ 534.981,96",
+      "data_efetivacao": "2026-07-14",
+      "data_email": "Thu, 16 Jul 2026 08:01:09 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
     }
   ],
-  "last_update": "13/07/2026",
+  "last_update": "14/07/2026",
   "summary": {
-    "total_bloqueado": 51713743.89,
+    "total_bloqueado": 52248725.85,
     "total_desbloqueado": 14635165.69,
     "total_transferido": 29436157.35,
-    "saldo_bloqueado_atual": 7642420.85,
-    "total_eventos": 888,
-    "total_processos": 471,
-    "processos_ativos": 61,
+    "saldo_bloqueado_atual": 8177402.81,
+    "total_eventos": 889,
+    "total_processos": 472,
+    "processos_ativos": 62,
     "processos": [
       {
         "processo": "00112010320215150101",
@@ -11622,6 +11635,24 @@
             "valor": 542666.8,
             "data": "2026-05-11",
             "id": "19e205ab65e399fc"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00110295520255030004",
+        "vara": "000015914",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 534981.96,
+        "total_bloqueado": 534981.96,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 534981.96,
+            "data": "2026-07-14",
+            "id": "19f69f1a590cfce2"
           }
         ],
         "desbloqueios": [],
