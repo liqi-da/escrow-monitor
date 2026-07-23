@@ -11764,17 +11764,30 @@
       "data_email": "Wed, 22 Jul 2026 08:00:59 +0000",
       "contrato": "CASAS BAHIA I",
       "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19f8dff7d18011b7",
+      "tipo": "DESBLOQUEIO",
+      "processo": "00104970520265030018",
+      "vara": "000014274",
+      "ag_conta": "8541/83571-9",
+      "valor": 513402.47,
+      "valor_display": "R$ 513.402,47",
+      "data_efetivacao": "2026-07-21",
+      "data_email": "Thu, 23 Jul 2026 08:02:37 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - DESBLOQUEIO JUDICIAL"
     }
   ],
-  "last_update": "20/07/2026",
+  "last_update": "21/07/2026",
   "summary": {
     "total_bloqueado": 53112189.26,
-    "total_desbloqueado": 15499047.73,
+    "total_desbloqueado": 16012450.2,
     "total_transferido": 29723560.0,
-    "saldo_bloqueado_atual": 7889581.53,
-    "total_eventos": 905,
+    "saldo_bloqueado_atual": 7376179.06,
+    "total_eventos": 906,
     "total_processos": 479,
-    "processos_ativos": 60,
+    "processos_ativos": 59,
     "processos": [
       {
         "processo": "00112010320215150101",
@@ -11843,24 +11856,6 @@
             "valor": 542666.8,
             "data": "2026-05-11",
             "id": "19e205ab65e399fc"
-          }
-        ],
-        "desbloqueios": [],
-        "transferencias": []
-      },
-      {
-        "processo": "00104970520265030018",
-        "vara": "000014274",
-        "status": "BLOQUEADO",
-        "saldo_bloqueado": 513402.47,
-        "total_bloqueado": 513402.47,
-        "total_desbloqueado": 0,
-        "total_transferido": 0,
-        "bloqueios": [
-          {
-            "valor": 513402.47,
-            "data": "2026-07-17",
-            "id": "19f83b236b2d4aee"
           }
         ],
         "desbloqueios": [],
@@ -22512,6 +22507,30 @@
             "valor": 17616.09,
             "data": "2026-07-20",
             "id": "19f88d91bc40fa90"
+          }
+        ],
+        "transferencias": []
+      },
+      {
+        "processo": "00104970520265030018",
+        "vara": "000014274",
+        "status": "DESBLOQUEADO",
+        "saldo_bloqueado": 0.0,
+        "total_bloqueado": 513402.47,
+        "total_desbloqueado": 513402.47,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 513402.47,
+            "data": "2026-07-17",
+            "id": "19f83b236b2d4aee"
+          }
+        ],
+        "desbloqueios": [
+          {
+            "valor": 513402.47,
+            "data": "2026-07-21",
+            "id": "19f8dff7d18011b7"
           }
         ],
         "transferencias": []
