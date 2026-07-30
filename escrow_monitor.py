@@ -40,8 +40,10 @@ CONTAS = {
     "8541/83571-9": {
         "nome": "Conta Fluxos Casas Bahia",
         "titular": "Grupo Casas Bahia",
-        "papel": "Recebe o Saldo Mínimo Retido e varre o excedente para a conta "
-                 "livre da Casas Bahia (cl. 1.1 do Anexo I)",
+        "papel": "Conta Vinculada – Casas Bahia do Contrato de Alienação e Cessão "
+                 "Fiduciária de Ações (cl. 6.1). Detém de fato o Saldo Mínimo e "
+                 "varre o excedente para a conta livre da Casas Bahia (cl. 1.1 "
+                 "do Anexo I do Contrato de Custódia)",
         "monitorada": True,
     },
     "8541/83534-7": {
@@ -481,11 +483,16 @@ def build_garantia_html(conc, contas, fmt_brl):
           </tbody>
         </table>
       </div>
-      <p class="nota">A Conta Controlada Casas Bahia (83534-7) é a
-        <strong>Conta Vinculada</strong> definida na cl. 6.1 do Contrato de Cessão
-        Fiduciária de Direitos Creditórios, onde o Saldo Mínimo Retido deveria ser
-        mantido e onde os recebíveis de antecipação da FIC deveriam ser depositados.
-        O colchão está, de fato, na Conta Fluxos (83571-9).</p>"""
+      <p class="nota">Cada conta é a Conta Vinculada de uma garantia diferente. A
+        <strong>83534-7</strong> é a Conta Vinculada do <strong>Contrato de Cessão
+        Fiduciária de Direitos Creditórios</strong> — é lá que a cl. 6.2/6.3 manda
+        manter o Saldo Mínimo Retido e a cl. 6.1(ii) manda depositar os recebíveis
+        de antecipação da FIC. A <strong>83571-9</strong> e a <strong>83563-6</strong>
+        são as Contas Vinculadas do <strong>Contrato de Alienação e Cessão Fiduciária
+        de Ações</strong>, cuja cl. 6.1 manda varrer os recursos para a Conta
+        Centralizadora da Liqi em até 5 dias úteis. O colchão está, de fato, na
+        83571-9, e o Anexo I do Contrato de Custódia varre o excedente na direção
+        oposta — para a conta livre da Casas Bahia.</p>"""
 
     if not conc or "garantia" not in conc.get("extrato", {}):
         return ('<p class="nota">Importe um extrato bancário para apurar o Saldo '

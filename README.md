@@ -19,15 +19,19 @@ O dashboard usa o extrato para o saldo bloqueado e os e-mails para atribuir cada
 
 O Contrato de Custódia de Recursos Financeiros T2 (ID 1034480, de 31/03/2026) abre três Contas Vinculadas na agência 8541:
 
-| Conta | Nome contratual | Cobertura |
-|-------|-----------------|-----------|
-| **83571-9** | Conta Fluxos Casas Bahia | e-mails + extrato |
-| 83534-7 | Conta Controlada Casas Bahia | tripwire |
-| 83563-6 | Conta Controlada Lake | tripwire |
+| Conta | Nome no Contrato de Custódia | Conta Vinculada de qual garantia | Cobertura |
+|-------|------------------------------|----------------------------------|-----------|
+| **83571-9** | Conta Fluxos Casas Bahia | Conta Vinculada – Casas Bahia (Alienação e Cessão Fiduciária de Ações) | e-mails + extrato |
+| 83534-7 | Conta Controlada Casas Bahia | Conta Vinculada (Cessão Fiduciária de Direitos Creditórios) | tripwire |
+| 83563-6 | Conta Controlada Lake | Conta Vinculada – Lake (Alienação e Cessão Fiduciária de Ações) | tripwire |
 
 As duas Contas de Liberação Controlada estão zeradas desde o início da operação. Elas entram no dashboard como **tripwire**: aparecem no mapa da aba Garantia e, se algum dia surgir evento nelas, sobe uma faixa vermelha no topo. O mesmo vale para conta que não esteja nas três — o contrato não prevê nenhuma outra.
 
-Atenção ao cruzamento: a 83534-7 é a **Conta Vinculada** da cl. 6.1 do Contrato de Cessão Fiduciária de Direitos Creditórios — é lá que o Saldo Mínimo Retido deveria estar e onde os recebíveis de antecipação da FIC deveriam ser depositados. O colchão está, de fato, na 83571-9.
+Atenção ao cruzamento, porque os nomes do Contrato de Custódia não seguem os dos contratos de garantia:
+
+- A **83534-7** é a Conta Vinculada do **Contrato de Cessão Fiduciária de Direitos Creditórios** — é lá que a cl. 6.2/6.3 manda manter o Saldo Mínimo Retido de R$ 30 mi e a cl. 6.1(ii) manda depositar os recebíveis de antecipação da FIC. Está zerada.
+- A **83571-9** e a **83563-6** são as Contas Vinculadas do **Contrato de Alienação e Cessão Fiduciária de Ações**, cuja cl. 6.1 manda varrer os recursos para a **Conta Centralizadora da Liqi** (ag. 2419, cc 96933-8) em até 5 dias úteis.
+- O colchão está de fato na **83571-9**, e o Anexo I do Contrato de Custódia varre o excedente na direção oposta — para a conta livre da Casas Bahia (0018/51133-7) no dia útil seguinte.
 
 ## Saldo Mínimo Retido — aba Garantia
 

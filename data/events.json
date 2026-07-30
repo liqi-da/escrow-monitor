@@ -24930,7 +24930,7 @@
         "conta": "8541/83571-9",
         "nome": "Conta Fluxos Casas Bahia",
         "titular": "Grupo Casas Bahia",
-        "papel": "Recebe o Saldo Mínimo Retido e varre o excedente para a conta livre da Casas Bahia (cl. 1.1 do Anexo I)",
+        "papel": "Conta Vinculada – Casas Bahia do Contrato de Alienação e Cessão Fiduciária de Ações (cl. 6.1). Detém de fato o Saldo Mínimo e varre o excedente para a conta livre da Casas Bahia (cl. 1.1 do Anexo I do Contrato de Custódia)",
         "monitorada": true,
         "prevista": true,
         "eventos": 944,
