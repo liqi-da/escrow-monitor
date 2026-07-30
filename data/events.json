@@ -23850,7 +23850,7 @@
     "extrato": {
       "arquivo": "Extrato_Lançamentos_8541_835719_30-07-2026.xlsx",
       "gerado_em": "30/07/2026 11:11:12",
-      "importado_em": "2026-07-30 11:43:58",
+      "importado_em": "2026-07-30 12:36:58",
       "periodo": "01/12/2025 até 30/07/2026",
       "ultimo_lancamento": "2026-07-30",
       "agencia": "8541",
@@ -23861,6 +23861,18 @@
         "DESBLOQUEIO": 16065968.21,
         "TRANSFERENCIA": 30559636.73,
         "SALDO_BLOQUEADO": 3200444.16
+      },
+      "garantia": {
+        "saldo_minimo_exigido": 30000000.0,
+        "saldo_minimo_inicial": 23000000.0,
+        "creditos": 33762990.21,
+        "rendimentos": 7682.68,
+        "saldo_livre": 10592.28,
+        "saldo_bloqueado": 3200444.16,
+        "colchao_efetivo": 10592.28,
+        "deficit": 29989407.72,
+        "cobertura": 0.000353,
+        "fora_da_conta": -0.28
       }
     },
     "eventos_conciliados": 905,
@@ -24911,5 +24923,49 @@
         "data_extrato": "2026-06-03"
       }
     ]
+  },
+  "contas": {
+    "contas": [
+      {
+        "conta": "8541/83571-9",
+        "nome": "Conta Fluxos Casas Bahia",
+        "titular": "Grupo Casas Bahia",
+        "papel": "Recebe o Saldo Mínimo Retido e varre o excedente para a conta livre da Casas Bahia (cl. 1.1 do Anexo I)",
+        "monitorada": true,
+        "prevista": true,
+        "eventos": 944,
+        "saldo_bloqueado": 5337751.89,
+        "total_transferido": 32464874.74,
+        "primeiro": "2026-04-07",
+        "ultimo": "2026-07-28"
+      },
+      {
+        "conta": "8541/83534-7",
+        "nome": "Conta Controlada Casas Bahia",
+        "titular": "Grupo Casas Bahia",
+        "papel": "Conta Vinculada do Contrato de Cessão Fiduciária de Direitos Creditórios (cl. 6.1) — só sai com aprovação da Liqi (cl. 4.1 do Anexo I)",
+        "monitorada": false,
+        "prevista": true,
+        "eventos": 0,
+        "saldo_bloqueado": 0.0,
+        "total_transferido": 0.0,
+        "primeiro": "",
+        "ultimo": ""
+      },
+      {
+        "conta": "8541/83563-6",
+        "nome": "Conta Controlada Lake",
+        "titular": "Lake Niassa",
+        "papel": "Conta Vinculada – Lake do Contrato de Alienação Fiduciária — só sai com aprovação da Liqi (cl. 4.1 do Anexo I)",
+        "monitorada": false,
+        "prevista": true,
+        "eventos": 0,
+        "saldo_bloqueado": 0.0,
+        "total_transferido": 0.0,
+        "primeiro": "",
+        "ultimo": ""
+      }
+    ],
+    "anomalias": []
   }
 }

@@ -5,7 +5,7 @@
   "conta": "0083571-9",
   "periodo": "01/12/2025 até 30/07/2026",
   "gerado_em": "30/07/2026 11:11:12",
-  "importado_em": "2026-07-30 11:43:58",
+  "importado_em": "2026-07-30 12:36:58",
   "primeiro_lancamento": "2026-04-08",
   "ultimo_lancamento": "2026-07-30",
   "saldo_conta_corrente": 10592.28,
@@ -16,6 +16,236 @@
     "TRANSFERENCIA": 30559636.73,
     "SALDO_BLOQUEADO": 3200444.16
   },
+  "garantia": {
+    "saldo_minimo_exigido": 30000000.0,
+    "saldo_minimo_inicial": 23000000.0,
+    "creditos": 33762990.21,
+    "rendimentos": 7682.68,
+    "saldo_livre": 10592.28,
+    "saldo_bloqueado": 3200444.16,
+    "colchao_efetivo": 10592.28,
+    "deficit": 29989407.72,
+    "cobertura": 0.000353,
+    "fora_da_conta": -0.28
+  },
+  "fluxos": [
+    {
+      "data": "2026-03-31",
+      "tipo": "CREDITO",
+      "valor": 30000000.0,
+      "descricao": "RECEBIMENTOS VIA S A"
+    },
+    {
+      "data": "2026-04-08",
+      "tipo": "RENDIMENTO",
+      "valor": 12.39,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-04-09",
+      "tipo": "RENDIMENTO",
+      "valor": 19.19,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-04-10",
+      "tipo": "RENDIMENTO",
+      "valor": 26.35,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-04-16",
+      "tipo": "RENDIMENTO",
+      "valor": 21.13,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-04-22",
+      "tipo": "CREDITO",
+      "valor": 3762990.21,
+      "descricao": "RECEBIMENTOS VIA S A"
+    },
+    {
+      "data": "2026-04-23",
+      "tipo": "RENDIMENTO",
+      "valor": 135.51,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-04-29",
+      "tipo": "RENDIMENTO",
+      "valor": 175.87,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-04-30",
+      "tipo": "RENDIMENTO",
+      "valor": 773.28,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-06",
+      "tipo": "RENDIMENTO",
+      "valor": 166.55,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-08",
+      "tipo": "RENDIMENTO",
+      "valor": 365.49,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-11",
+      "tipo": "RENDIMENTO",
+      "valor": 845.0,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-12",
+      "tipo": "RENDIMENTO",
+      "valor": 199.3,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-13",
+      "tipo": "RENDIMENTO",
+      "valor": 234.49,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-15",
+      "tipo": "RENDIMENTO",
+      "valor": 34.31,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-21",
+      "tipo": "RENDIMENTO",
+      "valor": 656.09,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-25",
+      "tipo": "RENDIMENTO",
+      "valor": 482.44,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-26",
+      "tipo": "RENDIMENTO",
+      "valor": 1676.66,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-05-27",
+      "tipo": "RENDIMENTO",
+      "valor": 220.56,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-02",
+      "tipo": "RENDIMENTO",
+      "valor": 847.03,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-08",
+      "tipo": "RENDIMENTO",
+      "valor": 33.04,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-09",
+      "tipo": "RENDIMENTO",
+      "valor": 351.12,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-12",
+      "tipo": "RENDIMENTO",
+      "valor": 249.36,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-16",
+      "tipo": "RENDIMENTO",
+      "valor": 53.62,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-17",
+      "tipo": "RENDIMENTO",
+      "valor": 47.28,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-22",
+      "tipo": "RENDIMENTO",
+      "valor": 32.29,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-23",
+      "tipo": "RENDIMENTO",
+      "valor": 16.36,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-06-29",
+      "tipo": "RENDIMENTO",
+      "valor": 3.01,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-07-01",
+      "tipo": "RENDIMENTO",
+      "valor": 0.25,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-07-08",
+      "tipo": "RENDIMENTO",
+      "valor": 3.53,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-07-13",
+      "tipo": "RENDIMENTO",
+      "valor": 0.03,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-07-15",
+      "tipo": "RENDIMENTO",
+      "valor": 0.12,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-07-20",
+      "tipo": "RENDIMENTO",
+      "valor": 0.04,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-07-21",
+      "tipo": "RENDIMENTO",
+      "valor": 0.72,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-07-23",
+      "tipo": "RENDIMENTO",
+      "valor": 0.06,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    },
+    {
+      "data": "2026-07-24",
+      "tipo": "RENDIMENTO",
+      "valor": 0.21,
+      "descricao": "RENDIMENTOS REND PAGO APLIC AUT MAIS"
+    }
+  ],
   "lancamentos": [
     {
       "data": "2026-04-08",

@@ -15,6 +15,31 @@ Dashboard de monitoramento de bloqueios, desbloqueios e transferências judiciai
 
 O dashboard usa o extrato para o saldo bloqueado e os e-mails para atribuir cada movimento a um processo. A aba **Conciliação** mostra onde as duas bases divergem e a data do extrato usado.
 
+## As três contas do contrato
+
+O Contrato de Custódia de Recursos Financeiros T2 (ID 1034480, de 31/03/2026) abre três Contas Vinculadas na agência 8541:
+
+| Conta | Nome contratual | Cobertura |
+|-------|-----------------|-----------|
+| **83571-9** | Conta Fluxos Casas Bahia | e-mails + extrato |
+| 83534-7 | Conta Controlada Casas Bahia | tripwire |
+| 83563-6 | Conta Controlada Lake | tripwire |
+
+As duas Contas de Liberação Controlada estão zeradas desde o início da operação. Elas entram no dashboard como **tripwire**: aparecem no mapa da aba Garantia e, se algum dia surgir evento nelas, sobe uma faixa vermelha no topo. O mesmo vale para conta que não esteja nas três — o contrato não prevê nenhuma outra.
+
+Atenção ao cruzamento: a 83534-7 é a **Conta Vinculada** da cl. 6.1 do Contrato de Cessão Fiduciária de Direitos Creditórios — é lá que o Saldo Mínimo Retido deveria estar e onde os recebíveis de antecipação da FIC deveriam ser depositados. O colchão está, de fato, na 83571-9.
+
+## Saldo Mínimo Retido — aba Garantia
+
+A cl. 6.3 do Contrato de Cessão Fiduciária (espelhada na cl. 2.1 do Anexo I do Contrato de Custódia) exige **R$ 30.000.000** retidos na conta. A cl. 2.9 do mesmo anexo determina que **valores bloqueados por ordem judicial não compõem esse saldo** — ou seja, cada bloqueio é um furo direto no colchão, e a reposição cabe à Casas Bahia.
+
+A aba **Garantia** apura:
+
+- **Colchão efetivo** = saldo livre em conta (o bloqueado não conta), com % de cobertura e déficit
+- **Ponte do colchão**: créditos recebidos + rendimentos − transferido judicialmente − bloqueado
+- **Prova de caixa**: créditos + rendimentos − transferências deve igualar saldo livre + bloqueado. Resíduo perto de zero significa que não há recursos aplicados fora da conta corrente; resíduo relevante indica aplicação financeira, e aí o saldo aplicado precisa ser conferido no Itaú na Internet
+- **Mapa das Contas Vinculadas** com o papel contratual de cada uma
+
 ## Como funciona
 
 1. `escrow_monitor.py` conecta na Gmail API e busca e-mails de `bloqueiojudicialgarantias@itau-unibanco.com.br`

@@ -222,6 +222,7 @@ def conciliar(events, extrato, summary):
             "conta": extrato.get("conta", ""),
             "saldo_conta_corrente": extrato.get("saldo_conta_corrente", 0.0),
             "totais": extrato["totais"],
+            "garantia": extrato.get("garantia", {}),
         },
         "eventos_conciliados": casados,
         "eventos_totais": len(eventos),

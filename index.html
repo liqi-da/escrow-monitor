@@ -80,6 +80,16 @@
     }
     .banner-alerta { border-left-color: var(--amarelo); }
     .banner-ok { border-left-color: var(--verde); }
+    .banner-critico {
+      border-left-color: var(--vermelho);
+      background: #fef4f4;
+    }
+    .tripwire {
+      margin: 0.5rem 0 0 1.1rem;
+      font-size: 0.8rem;
+      color: var(--cinza-texto);
+    }
+    .tripwire li { margin-bottom: 0.2rem; }
     .banner-linha {
       display: flex;
       flex-wrap: wrap;
@@ -129,6 +139,29 @@
     }
     .pos { color: var(--verde); }
     .neg { color: var(--vermelho); }
+
+    /* Painel de garantia */
+    .medidor {
+      height: 10px;
+      border-radius: 999px;
+      background: var(--cinza-borda);
+      overflow: hidden;
+      margin: 0.25rem 0 1.25rem;
+    }
+    .medidor-barra {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(45deg, var(--azul), var(--rosa));
+      min-width: 2px;
+    }
+    .celula-sub {
+      font-size: 0.72rem;
+      color: var(--cinza-texto);
+      margin-top: 0.15rem;
+      max-width: 52ch;
+    }
+    .linha-anomalia td { background: #fef4f4; }
+    .text-center { text-align: center; }
 
     /* Cards resumo */
     .cards {
@@ -339,13 +372,14 @@
   </header>
 
   <div class="container">
+    
     <div class="banner banner-alerta">
       <div class="banner-linha">
         <strong>Extrato conciliado</strong>
         <span>conta 8541/0083571-9</span>
         <span>lançamentos até <strong>30/07/2026</strong></span>
         <span>extrato gerado em <strong>30/07/2026 11:11:12</strong></span>
-        <span>importado em <strong>30/07/2026 11:43</strong></span>
+        <span>importado em <strong>30/07/2026 12:36</strong></span>
       </div>
       <div class="banner-linha banner-sub">
         <span>Extrato_Lançamentos_8541_835719_30-07-2026.xlsx</span>
@@ -358,6 +392,11 @@
     <!-- Cards resumo -->
     <div class="cards">
       <div class="card card-destaque">
+        <div class="card-label">Colchão de Garantia — Saldo Mínimo Retido</div>
+        <div class="card-value saldo">R$ 10.592,28</div>
+        <div class="card-sub">0.04% dos R$ 30.000.000,00 exigidos</div>
+      </div>
+      <div class="card">
         <div class="card-label">Saldo Bloqueado — Extrato</div>
         <div class="card-value saldo">R$ 3.200.444,16</div>
         <div class="card-sub">posição de 30/07/2026</div>
@@ -391,6 +430,7 @@
       <button class="tab active" data-tab="processos">Processos</button>
       <button class="tab" data-tab="timeline">Timeline</button>
       <button class="tab" data-tab="transferencias">Transferências</button>
+      <button class="tab" data-tab="garantia">Garantia</button>
       <button class="tab" data-tab="conciliacao">Conciliação</button>
     </div>
 
@@ -12896,6 +12936,106 @@
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- Garantia -->
+    <div id="garantia" class="tab-content">
+      <h3 class="secao">Saldo Mínimo Retido
+        <span class="secao-sub">cl. 6.2 e 6.3 do Contrato de Cessão Fiduciária ·
+          cl. 2.1 e 2.9 do Anexo I do Contrato de Custódia</span></h3>
+      <div class="cards">
+        <div class="card card-destaque">
+          <div class="card-label">Colchão efetivo</div>
+          <div class="card-value saldo">R$ 10.592,28</div>
+          <div class="card-sub">0.04% do exigido</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Exigido em contrato</div>
+          <div class="card-value">R$ 30.000.000,00</div>
+          <div class="card-sub">piso inicial de R$ 23.000.000,00</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Déficit de garantia</div>
+          <div class="card-value saldo">R$ 29.989.407,72</div>
+          <div class="card-sub">a repor pela Casas Bahia</div>
+        </div>
+      </div>
+      <div class="medidor" title="0.04% do Saldo Mínimo Retido">
+        <div class="medidor-barra" style="width: 0.0353%"></div>
+      </div>
+      <div class="table-wrapper ponte">
+        <table><tbody>
+        <tr>
+          <td>Saldo Mínimo Retido exigido (cl. 6.3)</td>
+          <td class="text-right font-bold">R$ 30.000.000,00</td>
+        </tr>
+        <tr>
+          <td>Créditos recebidos na conta</td>
+          <td class="text-right pos">R$ 33.762.990,21</td>
+        </tr>
+        <tr>
+          <td>Rendimentos de aplicação automática</td>
+          <td class="text-right pos">R$ 7.682,68</td>
+        </tr>
+        <tr>
+          <td>Transferido por ordem judicial a terceiros</td>
+          <td class="text-right neg">-R$ 30.559.636,73</td>
+        </tr>
+        <tr>
+          <td>Bloqueado judicialmente — não compõe o Saldo Mínimo (cl. 2.9)</td>
+          <td class="text-right neg">-R$ 3.200.444,16</td>
+        </tr>
+        <tr>
+          <td>Colchão efetivo (saldo livre em conta)</td>
+          <td class="text-right font-bold">R$ 10.592,28</td>
+        </tr>
+        </tbody></table>
+      </div>
+      <p class="nota">Prova de caixa fecha em -R$ 0,28: <strong>não há recursos aplicados fora da conta corrente</strong>. O Saldo Mínimo não está em Aplic Aut Mais nem em fundo — o colchão é o saldo livre acima, e nada além disso.</p>
+      <p class="nota">Todo bloqueio judicial é, por força da cl. 2.9, um furo direto
+        no colchão: o valor continua na conta mas deixa de contar como Saldo Mínimo,
+        e a reposição cabe à Casas Bahia.</p>
+
+      <h3 class="secao">Mapa das Contas Vinculadas
+        <span class="secao-sub">Contrato de Custódia ID 1034480, cl. 1.2</span></h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Conta</th><th>Papel contratual</th><th>Titular</th>
+            <th class="text-center">Cobertura</th><th class="text-right">Eventos</th>
+            <th class="text-right">Saldo bloqueado</th></tr></thead>
+          <tbody>
+        <tr class="">
+          <td class="font-mono">8541/83571-9</td>
+          <td>Conta Fluxos Casas Bahia<div class="celula-sub">Recebe o Saldo Mínimo Retido e varre o excedente para a conta livre da Casas Bahia (cl. 1.1 do Anexo I)</div></td>
+          <td>Grupo Casas Bahia</td>
+          <td class="text-center">e-mail + extrato</td>
+          <td class="text-right">944</td>
+          <td class="text-right font-bold">R$ 5.337.751,89</td>
+        </tr>
+        <tr class="">
+          <td class="font-mono">8541/83534-7</td>
+          <td>Conta Controlada Casas Bahia<div class="celula-sub">Conta Vinculada do Contrato de Cessão Fiduciária de Direitos Creditórios (cl. 6.1) — só sai com aprovação da Liqi (cl. 4.1 do Anexo I)</div></td>
+          <td>Grupo Casas Bahia</td>
+          <td class="text-center">tripwire</td>
+          <td class="text-right">—</td>
+          <td class="text-right font-bold">—</td>
+        </tr>
+        <tr class="">
+          <td class="font-mono">8541/83563-6</td>
+          <td>Conta Controlada Lake<div class="celula-sub">Conta Vinculada – Lake do Contrato de Alienação Fiduciária — só sai com aprovação da Liqi (cl. 4.1 do Anexo I)</div></td>
+          <td>Lake Niassa</td>
+          <td class="text-center">tripwire</td>
+          <td class="text-right">—</td>
+          <td class="text-right font-bold">—</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="nota">A Conta Controlada Casas Bahia (83534-7) é a
+        <strong>Conta Vinculada</strong> definida na cl. 6.1 do Contrato de Cessão
+        Fiduciária de Direitos Creditórios, onde o Saldo Mínimo Retido deveria ser
+        mantido e onde os recebíveis de antecipação da FIC deveriam ser depositados.
+        O colchão está, de fato, na Conta Fluxos (83571-9).</p>
     </div>
 
     <!-- Conciliação -->

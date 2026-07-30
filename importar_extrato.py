@@ -28,6 +28,19 @@ TIPOS = {
     "TRANSF": "TRANSFERENCIA",
 }
 
+# Lançamentos que não são constrição judicial, mas compõem o caixa da conta e
+# por isso são necessários para aferir o Saldo Mínimo Retido (cl. 6.2/6.3 do
+# Contrato de Cessão Fiduciária; cl. 2.1 do Anexo I do Contrato de Custódia).
+TIPOS_CAIXA = {
+    "RECEBIMENTOS": "CREDITO",
+    "RENDIMENTOS": "RENDIMENTO",
+}
+
+# Saldo Mínimo Retido exigido na conta (cl. 6.3 do Contrato de Cessão
+# Fiduciária de Direitos Creditórios) e o piso inicial da cl. 6.2.
+SALDO_MINIMO_RETIDO = 30_000_000.00
+SALDO_MINIMO_RETIDO_INICIAL = 23_000_000.00
+
 
 def classificar(lancamento):
     """Mapeia a descrição do lançamento para um dos três tipos financeiros."""
@@ -35,6 +48,44 @@ def classificar(lancamento):
         if lancamento.startswith(prefixo):
             return tipo
     return None
+
+
+def classificar_caixa(lancamento):
+    """Mapeia crédito de recebível e rendimento de aplicação automática."""
+    for prefixo, tipo in TIPOS_CAIXA.items():
+        if lancamento.startswith(prefixo):
+            return tipo
+    return None
+
+
+def apurar_garantia(totais, fluxos, saldo_conta):
+    """Afere o colchão de garantia contra o Saldo Mínimo Retido.
+
+    A cláusula 2.9 do Anexo I do Contrato de Custódia (e a 1.4.1) determina que
+    valores bloqueados por ordem judicial NÃO compõem o Saldo Mínimo. O colchão
+    efetivo é, portanto, apenas o saldo livre em conta.
+
+    O resíduo é uma prova de caixa: créditos + rendimentos - transferências
+    deveria igualar saldo livre + saldo bloqueado. Sobra positiva relevante
+    indica recursos fora da conta corrente (aplicação financeira).
+    """
+    creditos = round(sum(f["valor"] for f in fluxos if f["tipo"] == "CREDITO"), 2)
+    rendimentos = round(sum(f["valor"] for f in fluxos if f["tipo"] == "RENDIMENTO"), 2)
+    bloqueado = totais["SALDO_BLOQUEADO"]
+    colchao = round(saldo_conta, 2)
+    residuo = round(creditos + rendimentos - totais["TRANSFERENCIA"] - colchao - bloqueado, 2)
+    return {
+        "saldo_minimo_exigido": SALDO_MINIMO_RETIDO,
+        "saldo_minimo_inicial": SALDO_MINIMO_RETIDO_INICIAL,
+        "creditos": creditos,
+        "rendimentos": rendimentos,
+        "saldo_livre": colchao,
+        "saldo_bloqueado": bloqueado,
+        "colchao_efetivo": colchao,
+        "deficit": round(max(0.0, SALDO_MINIMO_RETIDO - colchao), 2),
+        "cobertura": round(colchao / SALDO_MINIMO_RETIDO, 6) if SALDO_MINIMO_RETIDO else 0.0,
+        "fora_da_conta": residuo,
+    }
 
 
 def parse_data(valor):
@@ -75,6 +126,7 @@ def importar(caminho_xlsx):
     meta = ler_metadados(ws)
 
     brutos = []
+    fluxos = []
     saldo_conta = None
     for row in ws.iter_rows(min_row=1, values_only=True):
         descricao = str(row[1] or "").strip()
@@ -83,15 +135,25 @@ def importar(caminho_xlsx):
         if descricao.startswith("SALDO EM CONTA CORRENTE"):
             saldo_conta = row[5]
             continue
-        tipo = classificar(descricao)
-        if not tipo or row[4] is None:
+        if row[4] is None:
             continue
-        brutos.append({
-            "data": parse_data(row[0]),
-            "tipo": tipo,
-            # o extrato traz bloqueio/transferência com sinal negativo
-            "valor": round(abs(float(row[4])), 2),
-        })
+        tipo = classificar(descricao)
+        if tipo:
+            brutos.append({
+                "data": parse_data(row[0]),
+                "tipo": tipo,
+                # o extrato traz bloqueio/transferência com sinal negativo
+                "valor": round(abs(float(row[4])), 2),
+            })
+            continue
+        tipo_caixa = classificar_caixa(descricao)
+        if tipo_caixa:
+            fluxos.append({
+                "data": parse_data(row[0]),
+                "tipo": tipo_caixa,
+                "valor": round(float(row[4]), 2),
+                "descricao": descricao,
+            })
 
     lancamentos, estornos = neutralizar_estornos(brutos)
 
@@ -100,6 +162,9 @@ def importar(caminho_xlsx):
     totais["SALDO_BLOQUEADO"] = round(
         totais["BLOQUEIO"] - totais["DESBLOQUEIO"] - totais["TRANSFERENCIA"], 2
     )
+
+    saldo_conta_valor = round(float(saldo_conta), 2) if saldo_conta else 0.0
+    garantia = apurar_garantia(totais, fluxos, saldo_conta_valor)
 
     datas = [l["data"] for l in lancamentos]
     extrato = {
@@ -112,9 +177,11 @@ def importar(caminho_xlsx):
         "importado_em": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "primeiro_lancamento": min(datas) if datas else "",
         "ultimo_lancamento": max(datas) if datas else "",
-        "saldo_conta_corrente": round(float(saldo_conta), 2) if saldo_conta else 0.0,
+        "saldo_conta_corrente": saldo_conta_valor,
         "estornos_de_transferencia": estornos,
         "totais": totais,
+        "garantia": garantia,
+        "fluxos": sorted(fluxos, key=lambda f: (f["data"], f["tipo"])),
         "lancamentos": sorted(lancamentos, key=lambda l: (l["data"], l["tipo"])),
     }
 
@@ -132,6 +199,15 @@ def importar(caminho_xlsx):
     print(f"  Transferido ......... {totais['TRANSFERENCIA']:,.2f}")
     print(f"  Saldo bloqueado ..... {totais['SALDO_BLOQUEADO']:,.2f}")
     print(f"  Saldo em c/c ........ {extrato['saldo_conta_corrente']:,.2f}")
+    print(f"  Créditos ............ {garantia['creditos']:,.2f}")
+    print(f"  Rendimentos ......... {garantia['rendimentos']:,.2f}")
+    print(f"\n--- SALDO MÍNIMO RETIDO ---")
+    print(f"  Exigido ............. {garantia['saldo_minimo_exigido']:,.2f}")
+    print(f"  Colchão efetivo ..... {garantia['colchao_efetivo']:,.2f} "
+          f"({garantia['cobertura'] * 100:.2f}% do exigido)")
+    print(f"  Déficit ............. {garantia['deficit']:,.2f}")
+    print(f"  Fora da conta ....... {garantia['fora_da_conta']:,.2f} "
+          f"(perto de zero indica que nao ha recursos aplicados)")
     print(f"\nSalvo em {EXTRATO_FILE}")
     return extrato
 

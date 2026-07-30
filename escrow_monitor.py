@@ -29,6 +29,46 @@ DATA_FILE = Path(__file__).parent / "data" / "events.json"
 EXTRATO_FILE = Path(__file__).parent / "data" / "extrato.json"
 CONFIG_DIR = Path(__file__).parent / "config"
 
+# As três Contas Vinculadas do Contrato de Custódia de Recursos Financeiros T2
+# ID 1034480 (cl. 1.2), celebrado em 31/03/2026 entre Liqi Securitizadora
+# (Credor), Grupo Casas Bahia e Lake Niassa (Devedores) e Itaú Unibanco.
+#
+# O extrato e os e-mails hoje cobrem apenas a Conta Fluxos. As duas Contas de
+# Liberação Controlada estão zeradas desde o início da operação, então aqui elas
+# funcionam como tripwire: qualquer evento nelas é anomalia e sobe como alerta.
+CONTAS = {
+    "8541/83571-9": {
+        "nome": "Conta Fluxos Casas Bahia",
+        "titular": "Grupo Casas Bahia",
+        "papel": "Recebe o Saldo Mínimo Retido e varre o excedente para a conta "
+                 "livre da Casas Bahia (cl. 1.1 do Anexo I)",
+        "monitorada": True,
+    },
+    "8541/83534-7": {
+        "nome": "Conta Controlada Casas Bahia",
+        "titular": "Grupo Casas Bahia",
+        "papel": "Conta Vinculada do Contrato de Cessão Fiduciária de Direitos "
+                 "Creditórios (cl. 6.1) — só sai com aprovação da Liqi (cl. 4.1 "
+                 "do Anexo I)",
+        "monitorada": False,
+    },
+    "8541/83563-6": {
+        "nome": "Conta Controlada Lake",
+        "titular": "Lake Niassa",
+        "papel": "Conta Vinculada – Lake do Contrato de Alienação Fiduciária — "
+                 "só sai com aprovação da Liqi (cl. 4.1 do Anexo I)",
+        "monitorada": False,
+    },
+}
+
+CONTA_FLUXOS = "8541/83571-9"
+
+# Saldo Mínimo Retido exigido na Conta Vinculada — cl. 6.3 do Contrato de Cessão
+# Fiduciária de Direitos Creditórios; espelhado na cl. 2.1 do Anexo I do
+# Contrato de Custódia. A cl. 2.9 do mesmo anexo determina que valores
+# bloqueados por ordem judicial não compõem esse saldo.
+SALDO_MINIMO_RETIDO = 30_000_000.00
+
 
 def get_gmail_service():
     """Autentica e retorna o serviço Gmail API."""
@@ -331,6 +371,193 @@ def compute_summary(events):
     }
 
 
+def compute_contas(events):
+    """Agrupa os eventos por conta vinculada e sinaliza o que sai do esperado.
+
+    As duas Contas de Liberação Controlada estão zeradas desde o início da
+    operação. Qualquer evento nelas — ou em conta não prevista no Contrato de
+    Custódia — é anomalia e precisa aparecer no topo do dashboard.
+    """
+    por_conta = {}
+    for ev in events:
+        conta = (ev.get("ag_conta") or "").strip() or "(sem conta no e-mail)"
+        c = por_conta.setdefault(conta, {
+            "conta": conta,
+            "eventos": 0,
+            "BLOQUEIO": 0.0,
+            "DESBLOQUEIO": 0.0,
+            "TRANSFERÊNCIA": 0.0,
+            "primeiro": "",
+            "ultimo": "",
+        })
+        c["eventos"] += 1
+        if ev["tipo"] in ("BLOQUEIO", "DESBLOQUEIO", "TRANSFERÊNCIA"):
+            c[ev["tipo"]] += ev["valor"]
+        data = ev.get("data_efetivacao") or ""
+        if data:
+            c["primeiro"] = min(c["primeiro"], data) if c["primeiro"] else data
+            c["ultimo"] = max(c["ultimo"], data)
+
+    linhas, anomalias = [], []
+    for chave, cfg in CONTAS.items():
+        c = por_conta.pop(chave, None)
+        linha = {
+            "conta": chave,
+            "nome": cfg["nome"],
+            "titular": cfg["titular"],
+            "papel": cfg["papel"],
+            "monitorada": cfg["monitorada"],
+            "prevista": True,
+            "eventos": c["eventos"] if c else 0,
+            "saldo_bloqueado": round(
+                c["BLOQUEIO"] - c["DESBLOQUEIO"] - c["TRANSFERÊNCIA"], 2) if c else 0.0,
+            "total_transferido": round(c["TRANSFERÊNCIA"], 2) if c else 0.0,
+            "primeiro": c["primeiro"] if c else "",
+            "ultimo": c["ultimo"] if c else "",
+        }
+        linhas.append(linha)
+        if chave != CONTA_FLUXOS and linha["eventos"]:
+            anomalias.append(linha)
+
+    # Sobrou alguma conta que o contrato não prevê
+    for chave, c in sorted(por_conta.items()):
+        linha = {
+            "conta": chave,
+            "nome": "Conta não prevista no Contrato de Custódia",
+            "titular": "—",
+            "papel": "Fora das três Contas Vinculadas da cl. 1.2 — conferir",
+            "monitorada": False,
+            "prevista": False,
+            "eventos": c["eventos"],
+            "saldo_bloqueado": round(
+                c["BLOQUEIO"] - c["DESBLOQUEIO"] - c["TRANSFERÊNCIA"], 2),
+            "total_transferido": round(c["TRANSFERÊNCIA"], 2),
+            "primeiro": c["primeiro"],
+            "ultimo": c["ultimo"],
+        }
+        linhas.append(linha)
+        anomalias.append(linha)
+
+    return {"contas": linhas, "anomalias": anomalias}
+
+
+def build_tripwire_html(contas):
+    """Alerta no topo quando aparece evento em conta que deveria ficar zerada."""
+    if not contas["anomalias"]:
+        return ""
+    itens = "".join(
+        f"<li><strong>{a['conta']}</strong> — {a['nome']}: {a['eventos']} evento(s), "
+        f"saldo bloqueado {fmt_brl(a['saldo_bloqueado'])}, transferido "
+        f"{fmt_brl(a['total_transferido'])} (de {fmt_data(a['primeiro'])} a "
+        f"{fmt_data(a['ultimo'])})</li>"
+        for a in contas["anomalias"])
+    return (f'<div class="banner banner-critico">'
+            f'<div class="banner-linha"><strong>Constrição fora da Conta Fluxos</strong>'
+            f'<span>as Contas de Liberação Controlada deveriam estar zeradas</span></div>'
+            f'<ul class="tripwire">{itens}</ul></div>')
+
+
+def build_garantia_html(conc, contas, fmt_brl):
+    """Aba de garantia: Saldo Mínimo Retido, erosão mensal e mapa das contas."""
+    contas_rows = "".join(f"""
+        <tr class="{'linha-anomalia' if a['eventos'] and a['conta'] != CONTA_FLUXOS else ''}">
+          <td class="font-mono">{a['conta']}</td>
+          <td>{a['nome']}<div class="celula-sub">{a['papel']}</div></td>
+          <td>{a['titular']}</td>
+          <td class="text-center">{'e-mail + extrato' if a['monitorada'] else 'tripwire'}</td>
+          <td class="text-right">{a['eventos'] or '—'}</td>
+          <td class="text-right font-bold">{fmt_brl(a['saldo_bloqueado']) if a['eventos'] else '—'}</td>
+        </tr>""" for a in contas["contas"])
+
+    mapa = f"""
+      <h3 class="secao">Mapa das Contas Vinculadas
+        <span class="secao-sub">Contrato de Custódia ID 1034480, cl. 1.2</span></h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Conta</th><th>Papel contratual</th><th>Titular</th>
+            <th class="text-center">Cobertura</th><th class="text-right">Eventos</th>
+            <th class="text-right">Saldo bloqueado</th></tr></thead>
+          <tbody>{contas_rows}
+          </tbody>
+        </table>
+      </div>
+      <p class="nota">A Conta Controlada Casas Bahia (83534-7) é a
+        <strong>Conta Vinculada</strong> definida na cl. 6.1 do Contrato de Cessão
+        Fiduciária de Direitos Creditórios, onde o Saldo Mínimo Retido deveria ser
+        mantido e onde os recebíveis de antecipação da FIC deveriam ser depositados.
+        O colchão está, de fato, na Conta Fluxos (83571-9).</p>"""
+
+    if not conc or "garantia" not in conc.get("extrato", {}):
+        return ('<p class="nota">Importe um extrato bancário para apurar o Saldo '
+                'Mínimo Retido.</p>' + mapa)
+
+    g = conc["extrato"]["garantia"]
+    cobertura = g["cobertura"] * 100
+    classe = "saldo" if g["deficit"] > 0 else "desbloqueado"
+    largura = min(100.0, max(0.0, cobertura))
+
+    linhas_colchao = [
+        ("Saldo Mínimo Retido exigido (cl. 6.3)", g["saldo_minimo_exigido"], True),
+        ("Créditos recebidos na conta", g["creditos"], False),
+        ("Rendimentos de aplicação automática", g["rendimentos"], False),
+        ("Transferido por ordem judicial a terceiros", -conc["extrato"]["totais"]["TRANSFERENCIA"], False),
+        ("Bloqueado judicialmente — não compõe o Saldo Mínimo (cl. 2.9)",
+         -g["saldo_bloqueado"], False),
+        ("Colchão efetivo (saldo livre em conta)", g["colchao_efetivo"], True),
+    ]
+    colchao_rows = "".join(f"""
+        <tr>
+          <td>{rotulo}</td>
+          <td class="text-right {'font-bold' if destaque else 'pos' if valor > 0 else 'neg'}">{fmt_brl(valor)}</td>
+        </tr>""" for rotulo, valor, destaque in linhas_colchao)
+
+    if abs(g["fora_da_conta"]) < 1.0:
+        aplicado = ('<p class="nota">Prova de caixa fecha em '
+                    f'{fmt_brl(g["fora_da_conta"])}: <strong>não há recursos '
+                    'aplicados fora da conta corrente</strong>. O Saldo Mínimo não '
+                    'está em Aplic Aut Mais nem em fundo — o colchão é o saldo livre '
+                    'acima, e nada além disso.</p>')
+    else:
+        aplicado = ('<p class="nota">Prova de caixa não fecha: sobram '
+                    f'<strong>{fmt_brl(g["fora_da_conta"])}</strong> entre o que '
+                    'entrou e o que se observa em conta. Provável aplicação '
+                    'financeira — conferir o saldo aplicado no Itaú na Internet.</p>')
+
+    return f"""
+      <h3 class="secao">Saldo Mínimo Retido
+        <span class="secao-sub">cl. 6.2 e 6.3 do Contrato de Cessão Fiduciária ·
+          cl. 2.1 e 2.9 do Anexo I do Contrato de Custódia</span></h3>
+      <div class="cards">
+        <div class="card card-destaque">
+          <div class="card-label">Colchão efetivo</div>
+          <div class="card-value {classe}">{fmt_brl(g['colchao_efetivo'])}</div>
+          <div class="card-sub">{cobertura:.2f}% do exigido</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Exigido em contrato</div>
+          <div class="card-value">{fmt_brl(g['saldo_minimo_exigido'])}</div>
+          <div class="card-sub">piso inicial de {fmt_brl(g['saldo_minimo_inicial'])}</div>
+        </div>
+        <div class="card">
+          <div class="card-label">Déficit de garantia</div>
+          <div class="card-value saldo">{fmt_brl(g['deficit'])}</div>
+          <div class="card-sub">a repor pela Casas Bahia</div>
+        </div>
+      </div>
+      <div class="medidor" title="{cobertura:.2f}% do Saldo Mínimo Retido">
+        <div class="medidor-barra" style="width: {largura:.4f}%"></div>
+      </div>
+      <div class="table-wrapper ponte">
+        <table><tbody>{colchao_rows}
+        </tbody></table>
+      </div>
+      {aplicado}
+      <p class="nota">Todo bloqueio judicial é, por força da cl. 2.9, um furo direto
+        no colchão: o valor continua na conta mas deixa de contar como Saldo Mínimo,
+        e a reposição cabe à Casas Bahia.</p>
+{mapa}"""
+
+
 def fmt_data(iso):
     """Converte data ISO para dd/mm/aaaa."""
     try:
@@ -567,6 +794,20 @@ def generate_html(data):
                        if conc else "")
     banner_html = build_banner_html(conc, fmt_brl)
 
+    contas = data.get("contas") or compute_contas(data["events"])
+    garantia_html = build_garantia_html(conc, contas, fmt_brl)
+    tripwire_html = build_tripwire_html(contas)
+
+    garantia = (conc or {}).get("extrato", {}).get("garantia")
+    if garantia:
+        colchao_card = f"""<div class="card card-destaque">
+        <div class="card-label">Colchão de Garantia — Saldo Mínimo Retido</div>
+        <div class="card-value {'saldo' if garantia['deficit'] > 0 else 'desbloqueado'}">{fmt_brl(garantia['colchao_efetivo'])}</div>
+        <div class="card-sub">{garantia['cobertura'] * 100:.2f}% dos {fmt_brl(garantia['saldo_minimo_exigido'])} exigidos</div>
+      </div>"""
+    else:
+        colchao_card = ""
+
     # O extrato é a fonte oficial de saldo; sem ele, cai para o número dos e-mails.
     if conc:
         saldo_extrato = conc["saldo_bloqueado_extrato"]
@@ -657,6 +898,16 @@ def generate_html(data):
     }}
     .banner-alerta {{ border-left-color: var(--amarelo); }}
     .banner-ok {{ border-left-color: var(--verde); }}
+    .banner-critico {{
+      border-left-color: var(--vermelho);
+      background: #fef4f4;
+    }}
+    .tripwire {{
+      margin: 0.5rem 0 0 1.1rem;
+      font-size: 0.8rem;
+      color: var(--cinza-texto);
+    }}
+    .tripwire li {{ margin-bottom: 0.2rem; }}
     .banner-linha {{
       display: flex;
       flex-wrap: wrap;
@@ -706,6 +957,29 @@ def generate_html(data):
     }}
     .pos {{ color: var(--verde); }}
     .neg {{ color: var(--vermelho); }}
+
+    /* Painel de garantia */
+    .medidor {{
+      height: 10px;
+      border-radius: 999px;
+      background: var(--cinza-borda);
+      overflow: hidden;
+      margin: 0.25rem 0 1.25rem;
+    }}
+    .medidor-barra {{
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(45deg, var(--azul), var(--rosa));
+      min-width: 2px;
+    }}
+    .celula-sub {{
+      font-size: 0.72rem;
+      color: var(--cinza-texto);
+      margin-top: 0.15rem;
+      max-width: 52ch;
+    }}
+    .linha-anomalia td {{ background: #fef4f4; }}
+    .text-center {{ text-align: center; }}
 
     /* Cards resumo */
     .cards {{
@@ -916,11 +1190,13 @@ def generate_html(data):
   </header>
 
   <div class="container">
+    {tripwire_html}
     {banner_html}
 
     <!-- Cards resumo -->
     <div class="cards">
-      <div class="card card-destaque">
+      {colchao_card}
+      <div class="card">
         <div class="card-label">Saldo Bloqueado — Extrato</div>
         <div class="card-value saldo">{fmt_brl(saldo_extrato)}</div>
         <div class="card-sub">{fonte_saldo}</div>
@@ -954,6 +1230,7 @@ def generate_html(data):
       <button class="tab active" data-tab="processos">Processos</button>
       <button class="tab" data-tab="timeline">Timeline</button>
       <button class="tab" data-tab="transferencias">Transferências</button>
+      <button class="tab" data-tab="garantia">Garantia</button>
       {conciliacao_tab}
     </div>
 
@@ -1025,6 +1302,10 @@ def generate_html(data):
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- Garantia -->
+    <div id="garantia" class="tab-content">{garantia_html}
     </div>
 
     <!-- Conciliação -->
@@ -1100,6 +1381,7 @@ def main():
 
     # Computa resumo
     data["summary"] = compute_summary(data["events"])
+    data["contas"] = compute_contas(data["events"])
     datas_efetivacao = [ev["data_efetivacao"] for ev in data["events"] if ev.get("data_efetivacao")]
     if datas_efetivacao:
         ultima = max(datas_efetivacao)
@@ -1137,6 +1419,15 @@ def main():
     print(f"Saldo bloqueado atual: {fmt_brl(s['saldo_bloqueado_atual'])}")
     print(f"Processos: {s['total_processos']} ({s['processos_ativos']} ativos)")
 
+    print(f"\n--- CONTAS VINCULADAS ---")
+    for linha in data["contas"]["contas"]:
+        marca = "!!" if linha["eventos"] and linha["conta"] != CONTA_FLUXOS else "  "
+        print(f" {marca} {linha['conta']}  {linha['nome']:32} "
+              f"{linha['eventos']:>4} evento(s)  bloqueado {fmt_brl(linha['saldo_bloqueado'])}")
+    if data["contas"]["anomalias"]:
+        print(" ALERTA: há constrição fora da Conta Fluxos — as Contas de Liberação "
+              "Controlada deveriam estar zeradas.")
+
     c = data.get("conciliacao")
     if c:
         print(f"\n--- CONCILIAÇÃO ---")
@@ -1148,6 +1439,16 @@ def main():
         print(f"Valores divergentes: {len(c['valores_divergentes'])} | "
               f"só e-mail: {len(c['so_no_email'])} | só extrato: {len(c['so_no_extrato'])}")
         print(f"Processos bloqueados que o extrato já baixou: {len(c['liberados_sem_aviso'])}")
+
+        g = c.get("extrato", {}).get("garantia")
+        if g:
+            print(f"\n--- SALDO MÍNIMO RETIDO ---")
+            print(f"Exigido (cl. 6.3):   {fmt_brl(g['saldo_minimo_exigido'])}")
+            print(f"Colchão efetivo:     {fmt_brl(g['colchao_efetivo'])} "
+                  f"({g['cobertura'] * 100:.2f}%)")
+            print(f"Déficit:             {fmt_brl(g['deficit'])}")
+            print(f"Bloqueado (cl. 2.9): {fmt_brl(g['saldo_bloqueado'])} — não compõe o mínimo")
+            print(f"Fora da conta:       {fmt_brl(g['fora_da_conta'])}")
 
 
 def fmt_brl(val):
