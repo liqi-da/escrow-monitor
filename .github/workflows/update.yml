@@ -36,7 +36,7 @@ jobs:
         run: |
           git config user.name "Escrow Monitor Bot"
           git config user.email "bot@liqi.com.br"
-          git add data/events.json index.html
+          git add data/events.json data/extrato.json index.html
           git diff --cached --quiet || git commit -m "Atualização diária — $(date -u +%Y-%m-%d)"
           git push
 

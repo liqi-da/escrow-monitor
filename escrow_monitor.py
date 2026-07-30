@@ -2,6 +2,14 @@
 Escrow Monitor — Liqi Digital Assets
 Busca emails do Itaú Escrow Advanced, parseia bloqueios/desbloqueios/transferências
 e gera dashboard HTML estático.
+
+O extrato bancário (data/extrato.json, alimentado por importar_extrato.py) é a
+fonte oficial de saldo; os e-mails são a única fonte de processo e vara. A
+conciliação entre as duas bases é recalculada a cada execução.
+
+Uso:
+    python escrow_monitor.py              # busca e-mails novos e regenera o dashboard
+    python escrow_monitor.py --offline    # só reprocessa/regenera, sem tocar no Gmail
 """
 
 import os
@@ -13,19 +21,22 @@ from datetime import datetime
 from pathlib import Path
 from html.parser import HTMLParser
 
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
+import conciliacao
 
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
 SENDER = "bloqueiojudicialgarantias@itau-unibanco.com.br"
 DATA_FILE = Path(__file__).parent / "data" / "events.json"
+EXTRATO_FILE = Path(__file__).parent / "data" / "extrato.json"
 CONFIG_DIR = Path(__file__).parent / "config"
 
 
 def get_gmail_service():
     """Autentica e retorna o serviço Gmail API."""
+    from google.oauth2.credentials import Credentials
+    from google.auth.transport.requests import Request
+    from google_auth_oauthlib.flow import InstalledAppFlow
+    from googleapiclient.discovery import build
+
     creds = None
     token_path = CONFIG_DIR / "token.json"
     creds_path = CONFIG_DIR / "credentials.json"
@@ -218,6 +229,14 @@ def load_existing_data():
     return {"events": [], "last_update": "", "summary": {}}
 
 
+def load_extrato():
+    """Carrega o último extrato bancário importado, se houver."""
+    if EXTRATO_FILE.exists():
+        with open(EXTRATO_FILE, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return None
+
+
 def save_data(data):
     """Salva dados no JSON."""
     DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
@@ -312,15 +331,177 @@ def compute_summary(events):
     }
 
 
+def fmt_data(iso):
+    """Converte data ISO para dd/mm/aaaa."""
+    try:
+        return datetime.strptime(iso[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+    except (ValueError, TypeError):
+        return iso or "—"
+
+
+def build_banner_html(conc, fmt_brl):
+    """Faixa com a procedência do extrato usado na conciliação."""
+    if not conc:
+        return ('<div class="banner banner-alerta">Nenhum extrato bancário importado. '
+                'Os valores abaixo vêm apenas dos e-mails e não estão conciliados — '
+                'rode <code>python importar_extrato.py &lt;arquivo.xlsx&gt;</code>.</div>')
+
+    e = conc["extrato"]
+    div = conc["divergencia_saldo"]
+    classe = "banner-ok" if abs(div) < 0.01 else "banner-alerta"
+    sinal = "+" if div > 0 else ""
+    return f"""<div class="banner {classe}">
+      <div class="banner-linha">
+        <strong>Extrato conciliado</strong>
+        <span>conta {e['agencia']}/{e['conta']}</span>
+        <span>lançamentos até <strong>{fmt_data(e['ultimo_lancamento'])}</strong></span>
+        <span>extrato gerado em <strong>{e['gerado_em'] or '—'}</strong></span>
+        <span>importado em <strong>{fmt_data(e['importado_em'])} {e['importado_em'][11:16]}</strong></span>
+      </div>
+      <div class="banner-linha banner-sub">
+        <span>{e['arquivo']}</span>
+        <span>{conc['eventos_conciliados']} de {conc['eventos_totais']} eventos casados
+              com {conc['lancamentos_totais']} lançamentos</span>
+        <span>divergência de saldo: <strong>{sinal}{fmt_brl(div)}</strong></span>
+      </div>
+    </div>"""
+
+
+def build_conciliacao_html(conc, fmt_brl):
+    """Conteúdo da aba de conciliação: ponte de saldo e pendências."""
+    if not conc:
+        return ""
+
+    p = conc["ponte"]
+    linhas_ponte = [
+        ("Saldo bloqueado pelo extrato (oficial)", p["extrato"], True),
+        ("Eventos avisados por e-mail sem lançamento no extrato", p["so_email"], False),
+        ("Lançamentos no extrato sem e-mail correspondente", p["so_extrato"], False),
+        ("Diferença entre o valor avisado e o valor lançado", p["valores_divergentes"], False),
+    ]
+    if abs(conc.get("ponte_residuo", 0)) >= 0.01:
+        linhas_ponte.append(("Resíduo não explicado", conc["ponte_residuo"], False))
+    linhas_ponte.append(("Saldo bloqueado pelos e-mails", p["emails"], True))
+
+    ponte_rows = "".join(f"""
+        <tr>
+          <td>{rotulo}</td>
+          <td class="text-right {'font-bold' if destaque else 'pos' if valor > 0 else 'neg'}">{fmt_brl(valor)}</td>
+        </tr>""" for rotulo, valor, destaque in linhas_ponte)
+
+    alertas = conc["liberados_sem_aviso"]
+    if alertas:
+        linhas = "".join(f"""
+        <tr>
+          <td class="font-mono">{a['processo']}</td>
+          <td>{a['vara']}</td>
+          <td>{fmt_data(a['data_bloqueio'])}</td>
+          <td><span class="tipo-badge tipo-{a['tipo_extrato'].lower()}">{a['tipo_extrato']}</span></td>
+          <td>{fmt_data(a['data_extrato'])}</td>
+          <td class="text-right font-bold">{fmt_brl(a['valor'])}</td>
+        </tr>""" for a in alertas)
+        total = sum(a["valor"] for a in alertas)
+        alertas_html = f"""
+      <h3 class="secao">Processos ainda marcados como bloqueados que o extrato já baixou
+        <span class="secao-sub">{len(alertas)} processos · {fmt_brl(total)}</span></h3>
+      <p class="nota">Amarração pelo valor exato do saldo somado a um lançamento posterior
+        ao bloqueio. O extrato não traz número de processo, então isto é indício forte para
+        conferência manual — o evento não é baixado automaticamente.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Processo</th><th>Vara</th><th>Bloqueado em</th>
+            <th>Lançamento</th><th>Data no extrato</th><th class="text-right">Valor</th></tr></thead>
+          <tbody>{linhas}
+          </tbody>
+        </table>
+      </div>"""
+    else:
+        alertas_html = ""
+
+    div_rows = "".join(f"""
+        <tr>
+          <td class="font-mono">{d['processo']}</td>
+          <td><span class="tipo-badge tipo-{d['tipo'].lower()[:13]}">{d['tipo']}</span></td>
+          <td>{fmt_data(d['data_email'])}</td>
+          <td class="text-right">{fmt_brl(d['valor_email'])}</td>
+          <td>{fmt_data(d['data_extrato'])}</td>
+          <td class="text-right">{fmt_brl(d['valor_extrato'])}</td>
+          <td class="text-right font-bold {'neg' if d['diferenca'] < 0 else 'pos'}">{fmt_brl(d['diferenca'])}</td>
+        </tr>""" for d in conc["valores_divergentes"])
+
+    email_rows = "".join(f"""
+        <tr>
+          <td>{fmt_data(x['data'])}</td>
+          <td><span class="tipo-badge tipo-{x['tipo'].lower()[:13]}">{x['tipo']}</span></td>
+          <td class="font-mono">{x['processo']}</td>
+          <td>{x['vara']}</td>
+          <td class="text-right">{fmt_brl(x['valor'])}</td>
+        </tr>""" for x in conc["so_no_email"])
+
+    extrato_rows = "".join(f"""
+        <tr>
+          <td>{fmt_data(x['data'])}</td>
+          <td><span class="tipo-badge tipo-{x['tipo'].lower()[:13]}">{x['tipo']}</span></td>
+          <td class="text-right">{fmt_brl(x['valor'])}</td>
+        </tr>""" for x in conc["so_no_extrato"])
+
+    te, tx = conc["totais_so_email"], conc["totais_so_extrato"]
+    return f"""
+      <h3 class="secao">Ponte entre as duas fontes</h3>
+      <div class="table-wrapper ponte">
+        <table><tbody>{ponte_rows}
+        </tbody></table>
+      </div>
+{alertas_html}
+      <h3 class="secao">Eventos lançados com valor diferente do avisado
+        <span class="secao-sub">{len(conc['valores_divergentes'])} eventos</span></h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Processo</th><th>Tipo</th><th>Data e-mail</th>
+            <th class="text-right">Valor e-mail</th><th>Data extrato</th>
+            <th class="text-right">Valor extrato</th><th class="text-right">Diferença</th></tr></thead>
+          <tbody>{div_rows}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="secao">Avisados por e-mail, sem lançamento no extrato
+        <span class="secao-sub">{len(conc['so_no_email'])} eventos ·
+          {fmt_brl(te['BLOQUEIO'])} bloq · {fmt_brl(te['DESBLOQUEIO'])} desbloq ·
+          {fmt_brl(te['TRANSFERENCIA'])} transf</span></h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Data</th><th>Tipo</th><th>Processo</th><th>Vara</th>
+            <th class="text-right">Valor</th></tr></thead>
+          <tbody>{email_rows}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="secao">Lançados no extrato, sem e-mail correspondente
+        <span class="secao-sub">{len(conc['so_no_extrato'])} lançamentos ·
+          {fmt_brl(tx['BLOQUEIO'])} bloq · {fmt_brl(tx['DESBLOQUEIO'])} desbloq ·
+          {fmt_brl(tx['TRANSFERENCIA'])} transf</span></h3>
+      <p class="nota">Sem e-mail não há número de processo. Lançamentos dos últimos dias
+        costumam ser apenas defasagem — o aviso do Itaú chega de 1 a 4 dias depois.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Data</th><th>Tipo</th><th class="text-right">Valor</th></tr></thead>
+          <tbody>{extrato_rows}
+          </tbody>
+        </table>
+      </div>"""
+
+
 def generate_html(data):
     """Gera o dashboard HTML estático."""
     summary = data["summary"]
     events = sorted(data["events"], key=lambda x: x["data_efetivacao"], reverse=True)
     last_update = data["last_update"]
+    conc = data.get("conciliacao")
 
-    def fmt_brl(val):
-        """Formata valor como BRL."""
-        return f"R$ {val:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    # Processos que o extrato indica como já liberados, mas ainda constam bloqueados
+    alertados = {a["processo"]: a for a in (conc or {}).get("liberados_sem_aviso", [])}
 
     # Tabela de processos
     processos_rows = ""
@@ -331,11 +512,20 @@ def generate_html(data):
             "TRANSFERIDO": "status-transferido",
         }.get(p["status"], "")
 
+        alerta = ""
+        if p["processo"] in alertados:
+            a = alertados[p["processo"]]
+            rotulo = "liberado" if a["tipo_extrato"] == "DESBLOQUEIO" else "transferido"
+            alerta = (f'<span class="status-badge status-alerta" '
+                      f'title="O extrato registra {rotulo} de {fmt_brl(a["valor"])} '
+                      f'em {fmt_data(a["data_extrato"])}, sem e-mail correspondente">'
+                      f'⚠ {rotulo} no extrato</span>')
+
         processos_rows += f"""
         <tr>
           <td class="font-mono">{p['processo']}</td>
           <td>{p['vara']}</td>
-          <td><span class="status-badge {status_class}">{p['status']}</span></td>
+          <td><span class="status-badge {status_class}">{p['status']}</span>{alerta}</td>
           <td class="text-right">{fmt_brl(p['total_bloqueado'])}</td>
           <td class="text-right">{fmt_brl(p['total_desbloqueado'])}</td>
           <td class="text-right">{fmt_brl(p['total_transferido'])}</td>
@@ -371,6 +561,19 @@ def generate_html(data):
           <td>{ev['vara']}</td>
           <td class="text-right">{ev['valor_display']}</td>
         </tr>"""
+
+    conciliacao_html = build_conciliacao_html(conc, fmt_brl)
+    conciliacao_tab = ('<button class="tab" data-tab="conciliacao">Conciliação</button>'
+                       if conc else "")
+    banner_html = build_banner_html(conc, fmt_brl)
+
+    # O extrato é a fonte oficial de saldo; sem ele, cai para o número dos e-mails.
+    if conc:
+        saldo_extrato = conc["saldo_bloqueado_extrato"]
+        fonte_saldo = f"posição de {fmt_data(conc['extrato']['ultimo_lancamento'])}"
+    else:
+        saldo_extrato = summary.get("saldo_bloqueado_atual", 0)
+        fonte_saldo = "sem extrato importado"
 
     html = f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -442,12 +645,78 @@ def generate_html(data):
       padding: 2rem;
     }}
 
+    /* Banner de conciliação */
+    .banner {{
+      border-radius: 12px;
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      border: 1px solid var(--cinza-borda);
+      background: var(--bg-card);
+      border-left: 4px solid var(--azul);
+    }}
+    .banner-alerta {{ border-left-color: var(--amarelo); }}
+    .banner-ok {{ border-left-color: var(--verde); }}
+    .banner-linha {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      align-items: baseline;
+    }}
+    .banner-sub {{
+      margin-top: 0.35rem;
+      font-size: 0.78rem;
+      color: var(--cinza-texto);
+    }}
+    .banner code {{
+      font-family: 'SF Mono', 'Cascadia Code', monospace;
+      background: #f0f0f0;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+    }}
+
+    /* Seções da conciliação */
+    .secao {{
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 2rem 0 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.75rem;
+    }}
+    .secao:first-child {{ margin-top: 0; }}
+    .secao-sub {{
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--cinza-texto);
+    }}
+    .nota {{
+      font-size: 0.8rem;
+      color: var(--cinza-texto);
+      margin-bottom: 0.75rem;
+      max-width: 70ch;
+    }}
+    .ponte tbody td {{ font-size: 0.9rem; }}
+    .ponte tbody tr:last-child td {{
+      border-bottom: none;
+      border-top: 2px solid var(--cinza-borda);
+    }}
+    .pos {{ color: var(--verde); }}
+    .neg {{ color: var(--vermelho); }}
+
     /* Cards resumo */
     .cards {{
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 1rem;
       margin-bottom: 2rem;
+    }}
+    .card-destaque {{
+      border-color: var(--azul);
+      box-shadow: 0 2px 8px rgba(2,71,254,0.10);
     }}
     .card {{
       background: var(--bg-card);
@@ -568,6 +837,12 @@ def generate_html(data):
     .status-bloqueado {{ background: #fef2f2; color: var(--vermelho); }}
     .status-desbloqueado {{ background: #f0fdf4; color: var(--verde); }}
     .status-transferido {{ background: #eff6ff; color: var(--azul); }}
+    .status-alerta {{
+      background: #fffbeb;
+      color: #b45309;
+      margin-left: 0.4rem;
+      cursor: help;
+    }}
 
     .tipo-badge {{
       display: inline-block;
@@ -641,8 +916,20 @@ def generate_html(data):
   </header>
 
   <div class="container">
+    {banner_html}
+
     <!-- Cards resumo -->
     <div class="cards">
+      <div class="card card-destaque">
+        <div class="card-label">Saldo Bloqueado — Extrato</div>
+        <div class="card-value saldo">{fmt_brl(saldo_extrato)}</div>
+        <div class="card-sub">{fonte_saldo}</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Saldo Bloqueado — E-mails</div>
+        <div class="card-value">{fmt_brl(summary.get('saldo_bloqueado_atual', 0))}</div>
+        <div class="card-sub">{summary.get('processos_ativos', 0)} processos ativos</div>
+      </div>
       <div class="card">
         <div class="card-label">Valor Histórico Bloqueado</div>
         <div class="card-value bloqueado">{fmt_brl(summary.get('total_bloqueado', 0))}</div>
@@ -657,13 +944,8 @@ def generate_html(data):
         <div class="card-value transferido">{fmt_brl(summary.get('total_transferido', 0))}</div>
       </div>
       <div class="card">
-        <div class="card-label">Saldo Bloqueado Atual</div>
-        <div class="card-value saldo">{fmt_brl(summary.get('saldo_bloqueado_atual', 0))}</div>
-        <div class="card-sub">{summary.get('processos_ativos', 0)} processos ativos</div>
-      </div>
-      <div class="card">
         <div class="card-label">Total Comprometido (Bloqueado + Transferido)</div>
-        <div class="card-value comprometido">{fmt_brl(summary.get('saldo_bloqueado_atual', 0) + summary.get('total_transferido', 0))}</div>
+        <div class="card-value comprometido">{fmt_brl(saldo_extrato + summary.get('total_transferido', 0))}</div>
       </div>
     </div>
 
@@ -672,6 +954,7 @@ def generate_html(data):
       <button class="tab active" data-tab="processos">Processos</button>
       <button class="tab" data-tab="timeline">Timeline</button>
       <button class="tab" data-tab="transferencias">Transferências</button>
+      {conciliacao_tab}
     </div>
 
     <!-- Processos -->
@@ -743,6 +1026,10 @@ def generate_html(data):
         </table>
       </div>
     </div>
+
+    <!-- Conciliação -->
+    <div id="conciliacao" class="tab-content">{conciliacao_html}
+    </div>
   </div>
 
   <footer class="footer">
@@ -782,30 +1069,31 @@ def generate_html(data):
 
 
 def main():
+    offline = "--offline" in sys.argv
+
     print("=== Escrow Monitor — Liqi Digital Assets ===")
     print(f"Execução: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
-    service = get_gmail_service()
-
     # Carrega dados existentes
     data = load_existing_data()
-    existing_ids = {ev["id"] for ev in data["events"]}
 
-    # Busca emails
-    messages = fetch_emails(service)
-
-    # Parseia novos emails
+    # Busca e parseia novos emails
     new_count = 0
-    for msg in messages:
-        msg_id = msg["id"]
-        if msg_id in existing_ids:
-            continue
+    if offline:
+        print("Modo offline: Gmail não consultado, apenas reprocessando os dados salvos.")
+    else:
+        service = get_gmail_service()
+        existing_ids = {ev["id"] for ev in data["events"]}
+        for msg in fetch_emails(service):
+            msg_id = msg["id"]
+            if msg_id in existing_ids:
+                continue
 
-        print(f"  Parseando {msg_id}...")
-        event = parse_email(service, msg_id)
-        if event:
-            data["events"].append(event)
-            new_count += 1
+            print(f"  Parseando {msg_id}...")
+            event = parse_email(service, msg_id)
+            if event:
+                data["events"].append(event)
+                new_count += 1
 
     print(f"Novos eventos: {new_count}")
     print(f"Total de eventos: {len(data['events'])}")
@@ -818,6 +1106,17 @@ def main():
         data["last_update"] = datetime.strptime(ultima, "%Y-%m-%d").strftime("%d/%m/%Y")
     else:
         data["last_update"] = datetime.now().strftime("%d/%m/%Y")
+
+    # Concilia contra o último extrato bancário importado
+    extrato = load_extrato()
+    if extrato:
+        data["conciliacao"] = conciliacao.conciliar(data["events"], extrato, data["summary"])
+        print(f"Extrato conciliado: {extrato['arquivo']} "
+              f"(lançamentos até {extrato['ultimo_lancamento']}, "
+              f"importado em {extrato['importado_em']})")
+    else:
+        data.pop("conciliacao", None)
+        print("Nenhum extrato importado — dashboard sai sem conciliação.")
 
     # Salva JSON
     save_data(data)
@@ -838,9 +1137,23 @@ def main():
     print(f"Saldo bloqueado atual: {fmt_brl(s['saldo_bloqueado_atual'])}")
     print(f"Processos: {s['total_processos']} ({s['processos_ativos']} ativos)")
 
+    c = data.get("conciliacao")
+    if c:
+        print(f"\n--- CONCILIAÇÃO ---")
+        print(f"Saldo bloqueado (extrato): {fmt_brl(c['saldo_bloqueado_extrato'])}")
+        print(f"Saldo bloqueado (e-mails): {fmt_brl(c['saldo_bloqueado_emails'])}")
+        print(f"Divergência:               {fmt_brl(c['divergencia_saldo'])}")
+        print(f"Casados: {c['eventos_conciliados']}/{c['eventos_totais']} eventos "
+              f"contra {c['lancamentos_totais']} lançamentos")
+        print(f"Valores divergentes: {len(c['valores_divergentes'])} | "
+              f"só e-mail: {len(c['so_no_email'])} | só extrato: {len(c['so_no_extrato'])}")
+        print(f"Processos bloqueados que o extrato já baixou: {len(c['liberados_sem_aviso'])}")
+
 
 def fmt_brl(val):
-    return f"R$ {val:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    sinal = "-" if val < 0 else ""
+    corpo = f"{abs(val):,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    return f"{sinal}R$ {corpo}"
 
 
 if __name__ == "__main__":

@@ -23843,5 +23843,1073 @@
         ]
       }
     ]
+  },
+  "conciliacao": {
+    "ponte_residuo": 0.0,
+    "eventos_casados_exatos": 880,
+    "extrato": {
+      "arquivo": "Extrato_Lançamentos_8541_835719_30-07-2026.xlsx",
+      "gerado_em": "30/07/2026 11:11:12",
+      "importado_em": "2026-07-30 11:43:58",
+      "periodo": "01/12/2025 até 30/07/2026",
+      "ultimo_lancamento": "2026-07-30",
+      "agencia": "8541",
+      "conta": "0083571-9",
+      "saldo_conta_corrente": 10592.28,
+      "totais": {
+        "BLOQUEIO": 49826049.1,
+        "DESBLOQUEIO": 16065968.21,
+        "TRANSFERENCIA": 30559636.73,
+        "SALDO_BLOQUEADO": 3200444.16
+      }
+    },
+    "eventos_conciliados": 905,
+    "eventos_totais": 944,
+    "lancamentos_totais": 988,
+    "saldo_bloqueado_extrato": 3200444.16,
+    "saldo_bloqueado_emails": 5337751.89,
+    "divergencia_saldo": 2137307.73,
+    "ponte": {
+      "extrato": 3200444.16,
+      "so_email": -875737.55,
+      "so_extrato": 3044560.75,
+      "valores_divergentes": -31515.47,
+      "emails": 5337751.89
+    },
+    "valores_divergentes": [
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "00006011220255050019",
+        "data_email": "2026-05-06",
+        "valor_email": 1624703.31,
+        "data_extrato": "2026-05-07",
+        "valor_extrato": 1506101.37,
+        "diferenca": -118601.94
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00006011220255050019",
+        "data_email": "2026-04-29",
+        "valor_email": 1624703.31,
+        "data_extrato": "2026-04-30",
+        "valor_extrato": 1506101.37,
+        "diferenca": -118601.94
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00117774420155150153",
+        "data_email": "2026-06-30",
+        "valor_email": 915099.13,
+        "data_extrato": "2026-06-23",
+        "valor_extrato": 928989.36,
+        "diferenca": 13890.23
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "10011616520245020241",
+        "data_email": "2026-05-08",
+        "valor_email": 172219.36,
+        "data_extrato": "2026-05-11",
+        "valor_extrato": 161643.14,
+        "diferenca": -10576.22
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00001183720265070036",
+        "data_email": "2026-06-23",
+        "valor_email": 622346.32,
+        "data_extrato": "2026-06-29",
+        "valor_extrato": 632768.99,
+        "diferenca": 10422.67
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00006517220265100016",
+        "data_email": "2026-07-23",
+        "valor_email": 74267.47,
+        "data_extrato": "2026-07-30",
+        "valor_extrato": 68486.89,
+        "diferenca": -5780.58
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00008170720215100008",
+        "data_email": "2026-05-15",
+        "valor_email": 368926.2,
+        "data_extrato": "2026-05-18",
+        "valor_extrato": 364561.65,
+        "diferenca": -4364.55
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00008170720215100008",
+        "data_email": "2026-05-08",
+        "valor_email": 368926.2,
+        "data_extrato": "2026-05-11",
+        "valor_extrato": 364561.65,
+        "diferenca": -4364.55
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00248638520215240003",
+        "data_email": "2026-06-26",
+        "valor_email": 66845.26,
+        "data_extrato": "2026-06-29",
+        "valor_extrato": 65470.85,
+        "diferenca": -1374.41
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "00248638520215240003",
+        "data_email": "2026-06-30",
+        "valor_email": 66845.26,
+        "data_extrato": "2026-07-01",
+        "valor_extrato": 65470.85,
+        "diferenca": -1374.41
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10006335020235020052",
+        "data_email": "2026-07-22",
+        "valor_email": 172602.88,
+        "data_extrato": "2026-07-21",
+        "valor_extrato": 173872.12,
+        "diferenca": 1269.24
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "00006472320205050036",
+        "data_email": "2026-05-19",
+        "valor_email": 36272.39,
+        "data_extrato": "2026-05-20",
+        "valor_extrato": 35082.56,
+        "diferenca": -1189.83
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00006472320205050036",
+        "data_email": "2026-05-07",
+        "valor_email": 36272.39,
+        "data_extrato": "2026-05-08",
+        "valor_extrato": 35082.56,
+        "diferenca": -1189.83
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10019542820195020322",
+        "data_email": "2026-07-07",
+        "valor_email": 50000.0,
+        "data_extrato": "2026-07-08",
+        "valor_extrato": 49120.07,
+        "diferenca": -879.93
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "10019542820195020322",
+        "data_email": "2026-07-13",
+        "valor_email": 50000.0,
+        "data_extrato": "2026-07-14",
+        "valor_extrato": 49120.07,
+        "diferenca": -879.93
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "10013648120255020341",
+        "data_email": "2026-06-12",
+        "valor_email": 238537.66,
+        "data_extrato": "2026-06-03",
+        "valor_extrato": 237684.0,
+        "diferenca": -853.66
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00006480620235090096",
+        "data_email": "2026-05-14",
+        "valor_email": 19527.2,
+        "data_extrato": "2026-05-04",
+        "valor_extrato": 18890.53,
+        "diferenca": -636.67
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00104774820265030136",
+        "data_email": "2026-07-16",
+        "valor_email": 17616.09,
+        "data_extrato": "2026-07-08",
+        "valor_extrato": 17144.43,
+        "diferenca": -471.66
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00101570420255150005",
+        "data_email": "2026-06-17",
+        "valor_email": 23398.26,
+        "data_extrato": "2026-06-16",
+        "valor_extrato": 23279.24,
+        "diferenca": -119.02
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "10001819720205020261",
+        "data_email": "2026-06-01",
+        "valor_email": 23454.48,
+        "data_extrato": "2026-06-02",
+        "valor_extrato": 23401.87,
+        "diferenca": -52.61
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10001819720205020261",
+        "data_email": "2026-05-26",
+        "valor_email": 23454.48,
+        "data_extrato": "2026-05-27",
+        "valor_extrato": 23401.87,
+        "diferenca": -52.61
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "08199592120258190008",
+        "data_email": "2026-04-15",
+        "valor_email": 4742.29,
+        "data_extrato": "2026-04-16",
+        "valor_extrato": 4741.93,
+        "diferenca": -0.36
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "08199592120258190008",
+        "data_email": "2026-04-27",
+        "valor_email": 4742.29,
+        "data_extrato": "2026-04-28",
+        "valor_extrato": 4741.93,
+        "diferenca": -0.36
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00115076220155150042",
+        "data_email": "2026-05-22",
+        "valor_email": 104913.52,
+        "data_extrato": "2026-05-25",
+        "valor_extrato": 104913.49,
+        "diferenca": -0.03
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "00115076220155150042",
+        "data_email": "2026-07-07",
+        "valor_email": 104913.52,
+        "data_extrato": "2026-07-08",
+        "valor_extrato": 104913.49,
+        "diferenca": -0.03
+      }
+    ],
+    "so_no_email": [
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00003835720255060018",
+        "vara": "000023077",
+        "data": "2026-04-14",
+        "valor": 152165.06
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00107106220245030153",
+        "vara": "000014413",
+        "data": "2026-04-15",
+        "valor": 52355.81
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10010992120255020231",
+        "vara": "000017849",
+        "data": "2026-04-28",
+        "valor": 29747.16
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "10010992120255020231",
+        "vara": "000017849",
+        "data": "2026-04-30",
+        "valor": 29747.16
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10025459220255020608",
+        "vara": "000016933",
+        "data": "2026-05-11",
+        "valor": 1113047.91
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "10025459220255020608",
+        "vara": "000016933",
+        "data": "2026-05-13",
+        "valor": 1113047.91
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10018752220235020318",
+        "vara": "000018151",
+        "data": "2026-05-14",
+        "valor": 1704124.31
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "10018752220235020318",
+        "vara": "000018151",
+        "data": "2026-05-18",
+        "valor": 1704124.31
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00012612420255170002",
+        "vara": "000016657",
+        "data": "2026-05-27",
+        "valor": 961048.89
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "00012612420255170002",
+        "vara": "000016657",
+        "data": "2026-05-29",
+        "valor": 961048.89
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "01011660820255010047",
+        "vara": "000008093",
+        "data": "2026-06-08",
+        "valor": 4500.0
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "10019064120255020231",
+        "vara": "000017849",
+        "data": "2026-06-15",
+        "valor": 334.55
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "10019263220255020231",
+        "vara": "000017849",
+        "data": "2026-06-15",
+        "valor": 232.95
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "01004068520265010512",
+        "vara": "000008727",
+        "data": "2026-06-22",
+        "valor": 1139193.27
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "10001993520255020717",
+        "vara": "000017557",
+        "data": "2026-06-22",
+        "valor": 7638.07
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00105389820205180103",
+        "vara": "000023883",
+        "data": "2026-06-26",
+        "valor": 730095.94
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "10005548720205020016",
+        "vara": "000018018",
+        "data": "2026-06-26",
+        "valor": 47824.74
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "00105389820205180103",
+        "vara": "000023883",
+        "data": "2026-07-01",
+        "valor": 730095.94
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00001183720265070036",
+        "vara": "000011420",
+        "data": "2026-07-01",
+        "valor": 622346.32
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00117774420155150153",
+        "vara": "000020925",
+        "data": "2026-07-02",
+        "valor": 915099.13
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00009856620255170010",
+        "vara": "000016537",
+        "data": "2026-07-02",
+        "valor": 404688.76
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00247422320225240003",
+        "vara": "000013396",
+        "data": "2026-07-07",
+        "valor": 46007.83
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00017053720255090016",
+        "vara": "000024427",
+        "data": "2026-07-08",
+        "valor": 108255.98
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00017053720255090016",
+        "vara": "000024427",
+        "data": "2026-07-10",
+        "valor": 108255.98
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00006092220185100010",
+        "vara": "000016415",
+        "data": "2026-07-10",
+        "valor": 34256.11
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00110295520255030004",
+        "vara": "000015914",
+        "data": "2026-07-14",
+        "valor": 534981.96
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00110295520255030004",
+        "vara": "000015914",
+        "data": "2026-07-16",
+        "valor": 534981.96
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00104970520265030018",
+        "vara": "000014274",
+        "data": "2026-07-17",
+        "valor": 513402.47
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00111435520255030113",
+        "vara": "000015852",
+        "data": "2026-07-20",
+        "valor": 195032.7
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00104774820265030136",
+        "vara": "000013698",
+        "data": "2026-07-20",
+        "valor": 17616.09
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00104970520265030018",
+        "vara": "000014274",
+        "data": "2026-07-21",
+        "valor": 513402.47
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00111435520255030113",
+        "vara": "000015852",
+        "data": "2026-07-22",
+        "valor": 195032.7
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00009957920225190004",
+        "vara": "000023350",
+        "data": "2026-07-23",
+        "valor": 213990.54
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00103523320195030134",
+        "vara": "000014735",
+        "data": "2026-07-24",
+        "valor": 233226.74
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10000306720265020473",
+        "vara": "000017517",
+        "data": "2026-07-27",
+        "valor": 533689.94
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00006517220265100016",
+        "vara": "000016279",
+        "data": "2026-07-27",
+        "valor": 74267.47
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "01004068520265010512",
+        "vara": "000008727",
+        "data": "2026-07-28",
+        "valor": 1139193.27
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00103523320195030134",
+        "vara": "000014735",
+        "data": "2026-07-28",
+        "valor": 233226.74
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "00009957920225190004",
+        "vara": "000023350",
+        "data": "2026-07-28",
+        "valor": 213990.54
+      }
+    ],
+    "so_no_extrato": [
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-04-15",
+        "valor": 2084.94
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-04-29",
+        "valor": 18890.53
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 310290.34
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 166538.32
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 161643.14
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 104663.53
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 69691.78
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 65000.0
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 59219.5
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 44807.67
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 44358.91
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 24300.0
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 8168.06
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 6035.1
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 4100.0
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 88.52
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-06",
+        "valor": 88.42
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-12",
+        "valor": 689751.44
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-05-14",
+        "valor": 689751.44
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-15",
+        "valor": 440199.75
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-05-15",
+        "valor": 380472.8
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-05-19",
+        "valor": 440199.75
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-05-28",
+        "valor": 85064.3
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-01",
+        "valor": 85064.3
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-03",
+        "valor": 310290.34
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-03",
+        "valor": 240347.42
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-03",
+        "valor": 141155.12
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-03",
+        "valor": 141155.12
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-03",
+        "valor": 20970.24
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-03",
+        "valor": 5223.15
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-03",
+        "valor": 4029.76
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-03",
+        "valor": 3060.34
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-03",
+        "valor": 3041.59
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-03",
+        "valor": 2663.42
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-03",
+        "valor": 156.24
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-03",
+        "valor": 18.75
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-09",
+        "valor": 91066.5
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-15",
+        "valor": 11462.34
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-16",
+        "valor": 17126.29
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-18",
+        "valor": 13633.23
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-23",
+        "valor": 1361.93
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-06-24",
+        "valor": 1365.36
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-26",
+        "valor": 558148.75
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-26",
+        "valor": 219761.97
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-26",
+        "valor": 98152.45
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-26",
+        "valor": 77131.68
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-26",
+        "valor": 73994.84
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-26",
+        "valor": 10454.36
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-26",
+        "valor": 9295.91
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-06-26",
+        "valor": 8439.59
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-26",
+        "valor": 1790.67
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-06-29",
+        "valor": 32175.26
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-01",
+        "valor": 135576.28
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-07-02",
+        "valor": 632768.99
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-02",
+        "valor": 1365.36
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-03",
+        "valor": 135576.28
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-03",
+        "valor": 91262.41
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-09",
+        "valor": 1.13
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-13",
+        "valor": 7414.2
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-13",
+        "valor": 1.13
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-15",
+        "valor": 343631.62
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-17",
+        "valor": 343631.62
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-17",
+        "valor": 0.12
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-20",
+        "valor": 343631.62
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-21",
+        "valor": 0.12
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-22",
+        "valor": 343631.62
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-23",
+        "valor": 173872.12
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-23",
+        "valor": 24599.98
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-24",
+        "valor": 116799.08
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-24",
+        "valor": 63234.31
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-27",
+        "valor": 5000.15
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-28",
+        "valor": 174889.26
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-28",
+        "valor": 63234.31
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-07-29",
+        "valor": 928989.36
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-07-29",
+        "valor": 116799.08
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-29",
+        "valor": 5000.15
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-07-30",
+        "valor": 174889.26
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "data": "2026-07-30",
+        "valor": 155092.77
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-07-30",
+        "valor": 127517.87
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-07-30",
+        "valor": 33808.33
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "data": "2026-07-30",
+        "valor": 24599.98
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-30",
+        "valor": 10120.0
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "data": "2026-07-30",
+        "valor": 472.28
+      }
+    ],
+    "totais_so_email": {
+      "BLOQUEIO": 8494790.51,
+      "DESBLOQUEIO": 3509027.2,
+      "TRANSFERENCIA": 5861500.86
+    },
+    "totais_so_extrato": {
+      "BLOQUEIO": 3765397.6,
+      "DESBLOQUEIO": 2721020.17,
+      "TRANSFERENCIA": 4088938.18
+    },
+    "liberados_sem_aviso": [
+      {
+        "processo": "01010335720255010049",
+        "vara": "000009290",
+        "valor": 558148.75,
+        "data_bloqueio": "2026-05-20",
+        "tipo_extrato": "DESBLOQUEIO",
+        "data_extrato": "2026-06-26"
+      },
+      {
+        "processo": "01008091620215010064",
+        "vara": "000009297",
+        "valor": 219761.97,
+        "data_bloqueio": "2026-05-25",
+        "tipo_extrato": "DESBLOQUEIO",
+        "data_extrato": "2026-06-26"
+      },
+      {
+        "processo": "01002446020265010037",
+        "vara": "000008606",
+        "valor": 127517.87,
+        "data_bloqueio": "2026-07-20",
+        "tipo_extrato": "TRANSFERENCIA",
+        "data_extrato": "2026-07-30"
+      },
+      {
+        "processo": "00249523120235240006",
+        "vara": "000013409",
+        "valor": 77131.68,
+        "data_bloqueio": "2026-05-27",
+        "tipo_extrato": "DESBLOQUEIO",
+        "data_extrato": "2026-06-26"
+      },
+      {
+        "processo": "10010171020175020315",
+        "vara": "000017538",
+        "valor": 33808.33,
+        "data_bloqueio": "2026-07-22",
+        "tipo_extrato": "TRANSFERENCIA",
+        "data_extrato": "2026-07-30"
+      },
+      {
+        "processo": "00099226120258050103",
+        "vara": "000037821",
+        "valor": 10454.36,
+        "data_bloqueio": "2026-06-01",
+        "tipo_extrato": "DESBLOQUEIO",
+        "data_extrato": "2026-06-26"
+      },
+      {
+        "processo": "00098583720148170480",
+        "vara": "000026479",
+        "valor": 10120.0,
+        "data_bloqueio": "2026-07-22",
+        "tipo_extrato": "DESBLOQUEIO",
+        "data_extrato": "2026-07-30"
+      },
+      {
+        "processo": "00006525420215060142",
+        "vara": "000023107",
+        "valor": 9295.91,
+        "data_bloqueio": "2026-06-19",
+        "tipo_extrato": "TRANSFERENCIA",
+        "data_extrato": "2026-06-26"
+      },
+      {
+        "processo": "00041527320258050043",
+        "vara": "000037659",
+        "valor": 8439.59,
+        "data_bloqueio": "2026-06-16",
+        "tipo_extrato": "TRANSFERENCIA",
+        "data_extrato": "2026-06-26"
+      },
+      {
+        "processo": "08448446020258190021",
+        "vara": "000007885",
+        "valor": 5223.15,
+        "data_bloqueio": "2026-05-25",
+        "tipo_extrato": "DESBLOQUEIO",
+        "data_extrato": "2026-06-03"
+      },
+      {
+        "processo": "40099410520268260224",
+        "vara": "000043414",
+        "valor": 1790.67,
+        "data_bloqueio": "2026-06-19",
+        "tipo_extrato": "DESBLOQUEIO",
+        "data_extrato": "2026-06-26"
+      },
+      {
+        "processo": "00007153920215050132",
+        "vara": "000012197",
+        "valor": 472.28,
+        "data_bloqueio": "2026-06-26",
+        "tipo_extrato": "DESBLOQUEIO",
+        "data_extrato": "2026-07-30"
+      },
+      {
+        "processo": "00207666220215040241",
+        "vara": "000011119",
+        "valor": 156.24,
+        "data_bloqueio": "2026-05-26",
+        "tipo_extrato": "TRANSFERENCIA",
+        "data_extrato": "2026-06-03"
+      }
+    ]
   }
 }

@@ -68,12 +68,78 @@
       padding: 2rem;
     }
 
+    /* Banner de conciliação */
+    .banner {
+      border-radius: 12px;
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.85rem;
+      border: 1px solid var(--cinza-borda);
+      background: var(--bg-card);
+      border-left: 4px solid var(--azul);
+    }
+    .banner-alerta { border-left-color: var(--amarelo); }
+    .banner-ok { border-left-color: var(--verde); }
+    .banner-linha {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1.5rem;
+      align-items: baseline;
+    }
+    .banner-sub {
+      margin-top: 0.35rem;
+      font-size: 0.78rem;
+      color: var(--cinza-texto);
+    }
+    .banner code {
+      font-family: 'SF Mono', 'Cascadia Code', monospace;
+      background: #f0f0f0;
+      padding: 0.1rem 0.35rem;
+      border-radius: 4px;
+    }
+
+    /* Seções da conciliação */
+    .secao {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 2rem 0 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0.75rem;
+    }
+    .secao:first-child { margin-top: 0; }
+    .secao-sub {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--cinza-texto);
+    }
+    .nota {
+      font-size: 0.8rem;
+      color: var(--cinza-texto);
+      margin-bottom: 0.75rem;
+      max-width: 70ch;
+    }
+    .ponte tbody td { font-size: 0.9rem; }
+    .ponte tbody tr:last-child td {
+      border-bottom: none;
+      border-top: 2px solid var(--cinza-borda);
+    }
+    .pos { color: var(--verde); }
+    .neg { color: var(--vermelho); }
+
     /* Cards resumo */
     .cards {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 1rem;
       margin-bottom: 2rem;
+    }
+    .card-destaque {
+      border-color: var(--azul);
+      box-shadow: 0 2px 8px rgba(2,71,254,0.10);
     }
     .card {
       background: var(--bg-card);
@@ -194,6 +260,12 @@
     .status-bloqueado { background: #fef2f2; color: var(--vermelho); }
     .status-desbloqueado { background: #f0fdf4; color: var(--verde); }
     .status-transferido { background: #eff6ff; color: var(--azul); }
+    .status-alerta {
+      background: #fffbeb;
+      color: #b45309;
+      margin-left: 0.4rem;
+      cursor: help;
+    }
 
     .tipo-badge {
       display: inline-block;
@@ -267,8 +339,34 @@
   </header>
 
   <div class="container">
+    <div class="banner banner-alerta">
+      <div class="banner-linha">
+        <strong>Extrato conciliado</strong>
+        <span>conta 8541/0083571-9</span>
+        <span>lançamentos até <strong>30/07/2026</strong></span>
+        <span>extrato gerado em <strong>30/07/2026 11:11:12</strong></span>
+        <span>importado em <strong>30/07/2026 11:43</strong></span>
+      </div>
+      <div class="banner-linha banner-sub">
+        <span>Extrato_Lançamentos_8541_835719_30-07-2026.xlsx</span>
+        <span>905 de 944 eventos casados
+              com 988 lançamentos</span>
+        <span>divergência de saldo: <strong>+R$ 2.137.307,73</strong></span>
+      </div>
+    </div>
+
     <!-- Cards resumo -->
     <div class="cards">
+      <div class="card card-destaque">
+        <div class="card-label">Saldo Bloqueado — Extrato</div>
+        <div class="card-value saldo">R$ 3.200.444,16</div>
+        <div class="card-sub">posição de 30/07/2026</div>
+      </div>
+      <div class="card">
+        <div class="card-label">Saldo Bloqueado — E-mails</div>
+        <div class="card-value">R$ 5.337.751,89</div>
+        <div class="card-sub">49 processos ativos</div>
+      </div>
       <div class="card">
         <div class="card-label">Valor Histórico Bloqueado</div>
         <div class="card-value bloqueado">R$ 54.662.575,77</div>
@@ -283,13 +381,8 @@
         <div class="card-value transferido">R$ 32.464.874,74</div>
       </div>
       <div class="card">
-        <div class="card-label">Saldo Bloqueado Atual</div>
-        <div class="card-value saldo">R$ 5.337.751,89</div>
-        <div class="card-sub">49 processos ativos</div>
-      </div>
-      <div class="card">
         <div class="card-label">Total Comprometido (Bloqueado + Transferido)</div>
-        <div class="card-value comprometido">R$ 37.802.626,63</div>
+        <div class="card-value comprometido">R$ 35.665.318,90</div>
       </div>
     </div>
 
@@ -298,6 +391,7 @@
       <button class="tab active" data-tab="processos">Processos</button>
       <button class="tab" data-tab="timeline">Timeline</button>
       <button class="tab" data-tab="transferencias">Transferências</button>
+      <button class="tab" data-tab="conciliacao">Conciliação</button>
     </div>
 
     <!-- Processos -->
@@ -332,7 +426,7 @@
         <tr>
           <td class="font-mono">01010335720255010049</td>
           <td>000009290</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra liberado de R$ 558.148,75 em 26/06/2026, sem e-mail correspondente">⚠ liberado no extrato</span></td>
           <td class="text-right">R$ 558.148,75</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -404,7 +498,7 @@
         <tr>
           <td class="font-mono">01008091620215010064</td>
           <td>000009297</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra liberado de R$ 219.761,97 em 26/06/2026, sem e-mail correspondente">⚠ liberado no extrato</span></td>
           <td class="text-right">R$ 219.761,97</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -449,7 +543,7 @@
         <tr>
           <td class="font-mono">01002446020265010037</td>
           <td>000008606</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra transferido de R$ 127.517,87 em 30/07/2026, sem e-mail correspondente">⚠ transferido no extrato</span></td>
           <td class="text-right">R$ 127.517,87</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -494,7 +588,7 @@
         <tr>
           <td class="font-mono">00249523120235240006</td>
           <td>000013409</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra liberado de R$ 77.131,68 em 26/06/2026, sem e-mail correspondente">⚠ liberado no extrato</span></td>
           <td class="text-right">R$ 77.131,68</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -539,7 +633,7 @@
         <tr>
           <td class="font-mono">10010171020175020315</td>
           <td>000017538</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra transferido de R$ 33.808,33 em 30/07/2026, sem e-mail correspondente">⚠ transferido no extrato</span></td>
           <td class="text-right">R$ 33.808,33</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -593,7 +687,7 @@
         <tr>
           <td class="font-mono">00099226120258050103</td>
           <td>000037821</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra liberado de R$ 10.454,36 em 26/06/2026, sem e-mail correspondente">⚠ liberado no extrato</span></td>
           <td class="text-right">R$ 10.454,36</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -602,7 +696,7 @@
         <tr>
           <td class="font-mono">00098583720148170480</td>
           <td>000026479</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra liberado de R$ 10.120,00 em 30/07/2026, sem e-mail correspondente">⚠ liberado no extrato</span></td>
           <td class="text-right">R$ 10.120,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -611,7 +705,7 @@
         <tr>
           <td class="font-mono">00006525420215060142</td>
           <td>000023107</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra transferido de R$ 9.295,91 em 26/06/2026, sem e-mail correspondente">⚠ transferido no extrato</span></td>
           <td class="text-right">R$ 9.295,91</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -629,7 +723,7 @@
         <tr>
           <td class="font-mono">00041527320258050043</td>
           <td>000037659</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra transferido de R$ 8.439,59 em 26/06/2026, sem e-mail correspondente">⚠ transferido no extrato</span></td>
           <td class="text-right">R$ 8.439,59</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -656,7 +750,7 @@
         <tr>
           <td class="font-mono">08448446020258190021</td>
           <td>000007885</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra liberado de R$ 5.223,15 em 03/06/2026, sem e-mail correspondente">⚠ liberado no extrato</span></td>
           <td class="text-right">R$ 5.223,15</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -719,7 +813,7 @@
         <tr>
           <td class="font-mono">40099410520268260224</td>
           <td>000043414</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra liberado de R$ 1.790,67 em 26/06/2026, sem e-mail correspondente">⚠ liberado no extrato</span></td>
           <td class="text-right">R$ 1.790,67</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -737,7 +831,7 @@
         <tr>
           <td class="font-mono">00007153920215050132</td>
           <td>000012197</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra liberado de R$ 472,28 em 30/07/2026, sem e-mail correspondente">⚠ liberado no extrato</span></td>
           <td class="text-right">R$ 472,28</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -755,7 +849,7 @@
         <tr>
           <td class="font-mono">00207666220215040241</td>
           <td>000011119</td>
-          <td><span class="status-badge status-bloqueado">BLOQUEADO</span></td>
+          <td><span class="status-badge status-bloqueado">BLOQUEADO</span><span class="status-badge status-alerta" title="O extrato registra transferido de R$ 156,24 em 03/06/2026, sem e-mail correspondente">⚠ transferido no extrato</span></td>
           <td class="text-right">R$ 156,24</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
@@ -4575,7 +4669,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 88,42</td>
-          <td class="text-right font-bold">R$ -88,42</td>
+          <td class="text-right font-bold">-R$ 88,42</td>
         </tr>
         <tr>
           <td class="font-mono">00109224120235150038</td>
@@ -4584,7 +4678,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 88,52</td>
           <td class="text-right">R$ 0,00</td>
-          <td class="text-right font-bold">R$ -88,52</td>
+          <td class="text-right font-bold">-R$ 88,52</td>
         </tr>
         <tr>
           <td class="font-mono">01006176220235010501</td>
@@ -4593,7 +4687,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 4.100,00</td>
           <td class="text-right">R$ 0,00</td>
-          <td class="text-right font-bold">R$ -4.100,00</td>
+          <td class="text-right font-bold">-R$ 4.100,00</td>
         </tr>
         <tr>
           <td class="font-mono">00127023720175150002</td>
@@ -4602,7 +4696,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 6.035,10</td>
-          <td class="text-right font-bold">R$ -6.035,10</td>
+          <td class="text-right font-bold">-R$ 6.035,10</td>
         </tr>
         <tr>
           <td class="font-mono">10001993520255020717</td>
@@ -4611,7 +4705,7 @@
           <td class="text-right">R$ 9.000,00</td>
           <td class="text-right">R$ 7.638,07</td>
           <td class="text-right">R$ 7.638,07</td>
-          <td class="text-right font-bold">R$ -6.276,14</td>
+          <td class="text-right font-bold">-R$ 6.276,14</td>
         </tr>
         <tr>
           <td class="font-mono">00104826720255030019</td>
@@ -4620,7 +4714,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 8.168,06</td>
           <td class="text-right">R$ 0,00</td>
-          <td class="text-right font-bold">R$ -8.168,06</td>
+          <td class="text-right font-bold">-R$ 8.168,06</td>
         </tr>
         <tr>
           <td class="font-mono">00101570420255150005</td>
@@ -4629,7 +4723,7 @@
           <td class="text-right">R$ 37.031,49</td>
           <td class="text-right">R$ 23.398,26</td>
           <td class="text-right">R$ 23.398,26</td>
-          <td class="text-right font-bold">R$ -9.765,03</td>
+          <td class="text-right font-bold">-R$ 9.765,03</td>
         </tr>
         <tr>
           <td class="font-mono">10005548720205020016</td>
@@ -4638,7 +4732,7 @@
           <td class="text-right">R$ 80.000,00</td>
           <td class="text-right">R$ 47.824,74</td>
           <td class="text-right">R$ 47.824,74</td>
-          <td class="text-right font-bold">R$ -15.649,48</td>
+          <td class="text-right font-bold">-R$ 15.649,48</td>
         </tr>
         <tr>
           <td class="font-mono">00003293120205050039</td>
@@ -4647,7 +4741,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 24.300,00</td>
-          <td class="text-right font-bold">R$ -24.300,00</td>
+          <td class="text-right font-bold">-R$ 24.300,00</td>
         </tr>
         <tr>
           <td class="font-mono">10003825020225020607</td>
@@ -4656,7 +4750,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 44.358,91</td>
-          <td class="text-right font-bold">R$ -44.358,91</td>
+          <td class="text-right font-bold">-R$ 44.358,91</td>
         </tr>
         <tr>
           <td class="font-mono">00005347520145020032</td>
@@ -4665,7 +4759,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 44.807,67</td>
-          <td class="text-right font-bold">R$ -44.807,67</td>
+          <td class="text-right font-bold">-R$ 44.807,67</td>
         </tr>
         <tr>
           <td class="font-mono">00107106220245030153</td>
@@ -4674,7 +4768,7 @@
           <td class="text-right">R$ 52.355,81</td>
           <td class="text-right">R$ 104.711,62</td>
           <td class="text-right">R$ 0,00</td>
-          <td class="text-right font-bold">R$ -52.355,81</td>
+          <td class="text-right font-bold">-R$ 52.355,81</td>
         </tr>
         <tr>
           <td class="font-mono">00101382620155010041</td>
@@ -4683,7 +4777,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 59.219,50</td>
-          <td class="text-right font-bold">R$ -59.219,50</td>
+          <td class="text-right font-bold">-R$ 59.219,50</td>
         </tr>
         <tr>
           <td class="font-mono">10013939620255020385</td>
@@ -4692,7 +4786,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 65.000,00</td>
-          <td class="text-right font-bold">R$ -65.000,00</td>
+          <td class="text-right font-bold">-R$ 65.000,00</td>
         </tr>
         <tr>
           <td class="font-mono">00113832820225180082</td>
@@ -4701,7 +4795,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 69.691,78</td>
-          <td class="text-right font-bold">R$ -69.691,78</td>
+          <td class="text-right font-bold">-R$ 69.691,78</td>
         </tr>
         <tr>
           <td class="font-mono">10027521220255020602</td>
@@ -4710,7 +4804,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 104.663,53</td>
-          <td class="text-right font-bold">R$ -104.663,53</td>
+          <td class="text-right font-bold">-R$ 104.663,53</td>
         </tr>
         <tr>
           <td class="font-mono">00003835720255060018</td>
@@ -4719,7 +4813,7 @@
           <td class="text-right">R$ 154.250,00</td>
           <td class="text-right">R$ 152.165,06</td>
           <td class="text-right">R$ 152.165,06</td>
-          <td class="text-right font-bold">R$ -150.080,12</td>
+          <td class="text-right font-bold">-R$ 150.080,12</td>
         </tr>
         <tr>
           <td class="font-mono">00008312720235060171</td>
@@ -4728,7 +4822,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 166.538,32</td>
-          <td class="text-right font-bold">R$ -166.538,32</td>
+          <td class="text-right font-bold">-R$ 166.538,32</td>
         </tr>
         <tr>
           <td class="font-mono">10011616520245020241</td>
@@ -4737,7 +4831,7 @@
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 0,00</td>
           <td class="text-right">R$ 172.219,36</td>
-          <td class="text-right font-bold">R$ -172.219,36</td>
+          <td class="text-right font-bold">-R$ 172.219,36</td>
         </tr>
         <tr>
           <td class="font-mono">10013648120255020341</td>
@@ -4746,7 +4840,7 @@
           <td class="text-right">R$ 250.000,00</td>
           <td class="text-right">R$ 238.537,66</td>
           <td class="text-right">R$ 238.537,66</td>
-          <td class="text-right font-bold">R$ -227.075,32</td>
+          <td class="text-right font-bold">-R$ 227.075,32</td>
         </tr>
           </tbody>
         </table>
@@ -12798,6 +12892,1104 @@
           <td class="font-mono">00007728120255060005</td>
           <td>000023019</td>
           <td class="text-right">R$ 321.187,13</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Conciliação -->
+    <div id="conciliacao" class="tab-content">
+      <h3 class="secao">Ponte entre as duas fontes</h3>
+      <div class="table-wrapper ponte">
+        <table><tbody>
+        <tr>
+          <td>Saldo bloqueado pelo extrato (oficial)</td>
+          <td class="text-right font-bold">R$ 3.200.444,16</td>
+        </tr>
+        <tr>
+          <td>Eventos avisados por e-mail sem lançamento no extrato</td>
+          <td class="text-right neg">-R$ 875.737,55</td>
+        </tr>
+        <tr>
+          <td>Lançamentos no extrato sem e-mail correspondente</td>
+          <td class="text-right pos">R$ 3.044.560,75</td>
+        </tr>
+        <tr>
+          <td>Diferença entre o valor avisado e o valor lançado</td>
+          <td class="text-right neg">-R$ 31.515,47</td>
+        </tr>
+        <tr>
+          <td>Saldo bloqueado pelos e-mails</td>
+          <td class="text-right font-bold">R$ 5.337.751,89</td>
+        </tr>
+        </tbody></table>
+      </div>
+
+      <h3 class="secao">Processos ainda marcados como bloqueados que o extrato já baixou
+        <span class="secao-sub">13 processos · R$ 1.062.320,80</span></h3>
+      <p class="nota">Amarração pelo valor exato do saldo somado a um lançamento posterior
+        ao bloqueio. O extrato não traz número de processo, então isto é indício forte para
+        conferência manual — o evento não é baixado automaticamente.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Processo</th><th>Vara</th><th>Bloqueado em</th>
+            <th>Lançamento</th><th>Data no extrato</th><th class="text-right">Valor</th></tr></thead>
+          <tbody>
+        <tr>
+          <td class="font-mono">01010335720255010049</td>
+          <td>000009290</td>
+          <td>20/05/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>26/06/2026</td>
+          <td class="text-right font-bold">R$ 558.148,75</td>
+        </tr>
+        <tr>
+          <td class="font-mono">01008091620215010064</td>
+          <td>000009297</td>
+          <td>25/05/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>26/06/2026</td>
+          <td class="text-right font-bold">R$ 219.761,97</td>
+        </tr>
+        <tr>
+          <td class="font-mono">01002446020265010037</td>
+          <td>000008606</td>
+          <td>20/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>30/07/2026</td>
+          <td class="text-right font-bold">R$ 127.517,87</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00249523120235240006</td>
+          <td>000013409</td>
+          <td>27/05/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>26/06/2026</td>
+          <td class="text-right font-bold">R$ 77.131,68</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10010171020175020315</td>
+          <td>000017538</td>
+          <td>22/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>30/07/2026</td>
+          <td class="text-right font-bold">R$ 33.808,33</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00099226120258050103</td>
+          <td>000037821</td>
+          <td>01/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>26/06/2026</td>
+          <td class="text-right font-bold">R$ 10.454,36</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00098583720148170480</td>
+          <td>000026479</td>
+          <td>22/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>30/07/2026</td>
+          <td class="text-right font-bold">R$ 10.120,00</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00006525420215060142</td>
+          <td>000023107</td>
+          <td>19/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>26/06/2026</td>
+          <td class="text-right font-bold">R$ 9.295,91</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00041527320258050043</td>
+          <td>000037659</td>
+          <td>16/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>26/06/2026</td>
+          <td class="text-right font-bold">R$ 8.439,59</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08448446020258190021</td>
+          <td>000007885</td>
+          <td>25/05/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>03/06/2026</td>
+          <td class="text-right font-bold">R$ 5.223,15</td>
+        </tr>
+        <tr>
+          <td class="font-mono">40099410520268260224</td>
+          <td>000043414</td>
+          <td>19/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>26/06/2026</td>
+          <td class="text-right font-bold">R$ 1.790,67</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00007153920215050132</td>
+          <td>000012197</td>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>30/07/2026</td>
+          <td class="text-right font-bold">R$ 472,28</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00207666220215040241</td>
+          <td>000011119</td>
+          <td>26/05/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>03/06/2026</td>
+          <td class="text-right font-bold">R$ 156,24</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="secao">Eventos lançados com valor diferente do avisado
+        <span class="secao-sub">25 eventos</span></h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Processo</th><th>Tipo</th><th>Data e-mail</th>
+            <th class="text-right">Valor e-mail</th><th>Data extrato</th>
+            <th class="text-right">Valor extrato</th><th class="text-right">Diferença</th></tr></thead>
+          <tbody>
+        <tr>
+          <td class="font-mono">00006011220255050019</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>06/05/2026</td>
+          <td class="text-right">R$ 1.624.703,31</td>
+          <td>07/05/2026</td>
+          <td class="text-right">R$ 1.506.101,37</td>
+          <td class="text-right font-bold neg">-R$ 118.601,94</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00006011220255050019</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>29/04/2026</td>
+          <td class="text-right">R$ 1.624.703,31</td>
+          <td>30/04/2026</td>
+          <td class="text-right">R$ 1.506.101,37</td>
+          <td class="text-right font-bold neg">-R$ 118.601,94</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00117774420155150153</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>30/06/2026</td>
+          <td class="text-right">R$ 915.099,13</td>
+          <td>23/06/2026</td>
+          <td class="text-right">R$ 928.989,36</td>
+          <td class="text-right font-bold pos">R$ 13.890,23</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10011616520245020241</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>08/05/2026</td>
+          <td class="text-right">R$ 172.219,36</td>
+          <td>11/05/2026</td>
+          <td class="text-right">R$ 161.643,14</td>
+          <td class="text-right font-bold neg">-R$ 10.576,22</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00001183720265070036</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>23/06/2026</td>
+          <td class="text-right">R$ 622.346,32</td>
+          <td>29/06/2026</td>
+          <td class="text-right">R$ 632.768,99</td>
+          <td class="text-right font-bold pos">R$ 10.422,67</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00006517220265100016</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>23/07/2026</td>
+          <td class="text-right">R$ 74.267,47</td>
+          <td>30/07/2026</td>
+          <td class="text-right">R$ 68.486,89</td>
+          <td class="text-right font-bold neg">-R$ 5.780,58</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00008170720215100008</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>15/05/2026</td>
+          <td class="text-right">R$ 368.926,20</td>
+          <td>18/05/2026</td>
+          <td class="text-right">R$ 364.561,65</td>
+          <td class="text-right font-bold neg">-R$ 4.364,55</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00008170720215100008</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>08/05/2026</td>
+          <td class="text-right">R$ 368.926,20</td>
+          <td>11/05/2026</td>
+          <td class="text-right">R$ 364.561,65</td>
+          <td class="text-right font-bold neg">-R$ 4.364,55</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00248638520215240003</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>26/06/2026</td>
+          <td class="text-right">R$ 66.845,26</td>
+          <td>29/06/2026</td>
+          <td class="text-right">R$ 65.470,85</td>
+          <td class="text-right font-bold neg">-R$ 1.374,41</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00248638520215240003</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>30/06/2026</td>
+          <td class="text-right">R$ 66.845,26</td>
+          <td>01/07/2026</td>
+          <td class="text-right">R$ 65.470,85</td>
+          <td class="text-right font-bold neg">-R$ 1.374,41</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10006335020235020052</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>22/07/2026</td>
+          <td class="text-right">R$ 172.602,88</td>
+          <td>21/07/2026</td>
+          <td class="text-right">R$ 173.872,12</td>
+          <td class="text-right font-bold pos">R$ 1.269,24</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00006472320205050036</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>19/05/2026</td>
+          <td class="text-right">R$ 36.272,39</td>
+          <td>20/05/2026</td>
+          <td class="text-right">R$ 35.082,56</td>
+          <td class="text-right font-bold neg">-R$ 1.189,83</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00006472320205050036</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>07/05/2026</td>
+          <td class="text-right">R$ 36.272,39</td>
+          <td>08/05/2026</td>
+          <td class="text-right">R$ 35.082,56</td>
+          <td class="text-right font-bold neg">-R$ 1.189,83</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10019542820195020322</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>07/07/2026</td>
+          <td class="text-right">R$ 50.000,00</td>
+          <td>08/07/2026</td>
+          <td class="text-right">R$ 49.120,07</td>
+          <td class="text-right font-bold neg">-R$ 879,93</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10019542820195020322</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>13/07/2026</td>
+          <td class="text-right">R$ 50.000,00</td>
+          <td>14/07/2026</td>
+          <td class="text-right">R$ 49.120,07</td>
+          <td class="text-right font-bold neg">-R$ 879,93</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10013648120255020341</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>12/06/2026</td>
+          <td class="text-right">R$ 238.537,66</td>
+          <td>03/06/2026</td>
+          <td class="text-right">R$ 237.684,00</td>
+          <td class="text-right font-bold neg">-R$ 853,66</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00006480620235090096</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>14/05/2026</td>
+          <td class="text-right">R$ 19.527,20</td>
+          <td>04/05/2026</td>
+          <td class="text-right">R$ 18.890,53</td>
+          <td class="text-right font-bold neg">-R$ 636,67</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00104774820265030136</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>16/07/2026</td>
+          <td class="text-right">R$ 17.616,09</td>
+          <td>08/07/2026</td>
+          <td class="text-right">R$ 17.144,43</td>
+          <td class="text-right font-bold neg">-R$ 471,66</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00101570420255150005</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td>17/06/2026</td>
+          <td class="text-right">R$ 23.398,26</td>
+          <td>16/06/2026</td>
+          <td class="text-right">R$ 23.279,24</td>
+          <td class="text-right font-bold neg">-R$ 119,02</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10001819720205020261</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>01/06/2026</td>
+          <td class="text-right">R$ 23.454,48</td>
+          <td>02/06/2026</td>
+          <td class="text-right">R$ 23.401,87</td>
+          <td class="text-right font-bold neg">-R$ 52,61</td>
+        </tr>
+        <tr>
+          <td class="font-mono">10001819720205020261</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>26/05/2026</td>
+          <td class="text-right">R$ 23.454,48</td>
+          <td>27/05/2026</td>
+          <td class="text-right">R$ 23.401,87</td>
+          <td class="text-right font-bold neg">-R$ 52,61</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08199592120258190008</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>15/04/2026</td>
+          <td class="text-right">R$ 4.742,29</td>
+          <td>16/04/2026</td>
+          <td class="text-right">R$ 4.741,93</td>
+          <td class="text-right font-bold neg">-R$ 0,36</td>
+        </tr>
+        <tr>
+          <td class="font-mono">08199592120258190008</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>27/04/2026</td>
+          <td class="text-right">R$ 4.742,29</td>
+          <td>28/04/2026</td>
+          <td class="text-right">R$ 4.741,93</td>
+          <td class="text-right font-bold neg">-R$ 0,36</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00115076220155150042</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td>22/05/2026</td>
+          <td class="text-right">R$ 104.913,52</td>
+          <td>25/05/2026</td>
+          <td class="text-right">R$ 104.913,49</td>
+          <td class="text-right font-bold neg">-R$ 0,03</td>
+        </tr>
+        <tr>
+          <td class="font-mono">00115076220155150042</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td>07/07/2026</td>
+          <td class="text-right">R$ 104.913,52</td>
+          <td>08/07/2026</td>
+          <td class="text-right">R$ 104.913,49</td>
+          <td class="text-right font-bold neg">-R$ 0,03</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="secao">Avisados por e-mail, sem lançamento no extrato
+        <span class="secao-sub">39 eventos ·
+          R$ 8.494.790,51 bloq · R$ 3.509.027,20 desbloq ·
+          R$ 5.861.500,86 transf</span></h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Data</th><th>Tipo</th><th>Processo</th><th>Vara</th>
+            <th class="text-right">Valor</th></tr></thead>
+          <tbody>
+        <tr>
+          <td>14/04/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00003835720255060018</td>
+          <td>000023077</td>
+          <td class="text-right">R$ 152.165,06</td>
+        </tr>
+        <tr>
+          <td>15/04/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00107106220245030153</td>
+          <td>000014413</td>
+          <td class="text-right">R$ 52.355,81</td>
+        </tr>
+        <tr>
+          <td>28/04/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10010992120255020231</td>
+          <td>000017849</td>
+          <td class="text-right">R$ 29.747,16</td>
+        </tr>
+        <tr>
+          <td>30/04/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">10010992120255020231</td>
+          <td>000017849</td>
+          <td class="text-right">R$ 29.747,16</td>
+        </tr>
+        <tr>
+          <td>11/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10025459220255020608</td>
+          <td>000016933</td>
+          <td class="text-right">R$ 1.113.047,91</td>
+        </tr>
+        <tr>
+          <td>13/05/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="font-mono">10025459220255020608</td>
+          <td>000016933</td>
+          <td class="text-right">R$ 1.113.047,91</td>
+        </tr>
+        <tr>
+          <td>14/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10018752220235020318</td>
+          <td>000018151</td>
+          <td class="text-right">R$ 1.704.124,31</td>
+        </tr>
+        <tr>
+          <td>18/05/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="font-mono">10018752220235020318</td>
+          <td>000018151</td>
+          <td class="text-right">R$ 1.704.124,31</td>
+        </tr>
+        <tr>
+          <td>27/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00012612420255170002</td>
+          <td>000016657</td>
+          <td class="text-right">R$ 961.048,89</td>
+        </tr>
+        <tr>
+          <td>29/05/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="font-mono">00012612420255170002</td>
+          <td>000016657</td>
+          <td class="text-right">R$ 961.048,89</td>
+        </tr>
+        <tr>
+          <td>08/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">01011660820255010047</td>
+          <td>000008093</td>
+          <td class="text-right">R$ 4.500,00</td>
+        </tr>
+        <tr>
+          <td>15/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">10019064120255020231</td>
+          <td>000017849</td>
+          <td class="text-right">R$ 334,55</td>
+        </tr>
+        <tr>
+          <td>15/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">10019263220255020231</td>
+          <td>000017849</td>
+          <td class="text-right">R$ 232,95</td>
+        </tr>
+        <tr>
+          <td>22/06/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">01004068520265010512</td>
+          <td>000008727</td>
+          <td class="text-right">R$ 1.139.193,27</td>
+        </tr>
+        <tr>
+          <td>22/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">10001993520255020717</td>
+          <td>000017557</td>
+          <td class="text-right">R$ 7.638,07</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00105389820205180103</td>
+          <td>000023883</td>
+          <td class="text-right">R$ 730.095,94</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">10005548720205020016</td>
+          <td>000018018</td>
+          <td class="text-right">R$ 47.824,74</td>
+        </tr>
+        <tr>
+          <td>01/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="font-mono">00105389820205180103</td>
+          <td>000023883</td>
+          <td class="text-right">R$ 730.095,94</td>
+        </tr>
+        <tr>
+          <td>01/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00001183720265070036</td>
+          <td>000011420</td>
+          <td class="text-right">R$ 622.346,32</td>
+        </tr>
+        <tr>
+          <td>02/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00117774420155150153</td>
+          <td>000020925</td>
+          <td class="text-right">R$ 915.099,13</td>
+        </tr>
+        <tr>
+          <td>02/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00009856620255170010</td>
+          <td>000016537</td>
+          <td class="text-right">R$ 404.688,76</td>
+        </tr>
+        <tr>
+          <td>07/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00247422320225240003</td>
+          <td>000013396</td>
+          <td class="text-right">R$ 46.007,83</td>
+        </tr>
+        <tr>
+          <td>08/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00017053720255090016</td>
+          <td>000024427</td>
+          <td class="text-right">R$ 108.255,98</td>
+        </tr>
+        <tr>
+          <td>10/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00017053720255090016</td>
+          <td>000024427</td>
+          <td class="text-right">R$ 108.255,98</td>
+        </tr>
+        <tr>
+          <td>10/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00006092220185100010</td>
+          <td>000016415</td>
+          <td class="text-right">R$ 34.256,11</td>
+        </tr>
+        <tr>
+          <td>14/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00110295520255030004</td>
+          <td>000015914</td>
+          <td class="text-right">R$ 534.981,96</td>
+        </tr>
+        <tr>
+          <td>16/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00110295520255030004</td>
+          <td>000015914</td>
+          <td class="text-right">R$ 534.981,96</td>
+        </tr>
+        <tr>
+          <td>17/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00104970520265030018</td>
+          <td>000014274</td>
+          <td class="text-right">R$ 513.402,47</td>
+        </tr>
+        <tr>
+          <td>20/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00111435520255030113</td>
+          <td>000015852</td>
+          <td class="text-right">R$ 195.032,70</td>
+        </tr>
+        <tr>
+          <td>20/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00104774820265030136</td>
+          <td>000013698</td>
+          <td class="text-right">R$ 17.616,09</td>
+        </tr>
+        <tr>
+          <td>21/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00104970520265030018</td>
+          <td>000014274</td>
+          <td class="text-right">R$ 513.402,47</td>
+        </tr>
+        <tr>
+          <td>22/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00111435520255030113</td>
+          <td>000015852</td>
+          <td class="text-right">R$ 195.032,70</td>
+        </tr>
+        <tr>
+          <td>23/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00009957920225190004</td>
+          <td>000023350</td>
+          <td class="text-right">R$ 213.990,54</td>
+        </tr>
+        <tr>
+          <td>24/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">00103523320195030134</td>
+          <td>000014735</td>
+          <td class="text-right">R$ 233.226,74</td>
+        </tr>
+        <tr>
+          <td>27/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="font-mono">10000306720265020473</td>
+          <td>000017517</td>
+          <td class="text-right">R$ 533.689,94</td>
+        </tr>
+        <tr>
+          <td>27/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00006517220265100016</td>
+          <td>000016279</td>
+          <td class="text-right">R$ 74.267,47</td>
+        </tr>
+        <tr>
+          <td>28/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="font-mono">01004068520265010512</td>
+          <td>000008727</td>
+          <td class="text-right">R$ 1.139.193,27</td>
+        </tr>
+        <tr>
+          <td>28/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="font-mono">00103523320195030134</td>
+          <td>000014735</td>
+          <td class="text-right">R$ 233.226,74</td>
+        </tr>
+        <tr>
+          <td>28/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="font-mono">00009957920225190004</td>
+          <td>000023350</td>
+          <td class="text-right">R$ 213.990,54</td>
+        </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="secao">Lançados no extrato, sem e-mail correspondente
+        <span class="secao-sub">83 lançamentos ·
+          R$ 3.765.397,60 bloq · R$ 2.721.020,17 desbloq ·
+          R$ 4.088.938,18 transf</span></h3>
+      <p class="nota">Sem e-mail não há número de processo. Lançamentos dos últimos dias
+        costumam ser apenas defasagem — o aviso do Itaú chega de 1 a 4 dias depois.</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th>Data</th><th>Tipo</th><th class="text-right">Valor</th></tr></thead>
+          <tbody>
+        <tr>
+          <td>15/04/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 2.084,94</td>
+        </tr>
+        <tr>
+          <td>29/04/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 18.890,53</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 310.290,34</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 166.538,32</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 161.643,14</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 104.663,53</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 69.691,78</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 65.000,00</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 59.219,50</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 44.807,67</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 44.358,91</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 24.300,00</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 8.168,06</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 6.035,10</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 4.100,00</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 88,52</td>
+        </tr>
+        <tr>
+          <td>06/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 88,42</td>
+        </tr>
+        <tr>
+          <td>12/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 689.751,44</td>
+        </tr>
+        <tr>
+          <td>14/05/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 689.751,44</td>
+        </tr>
+        <tr>
+          <td>15/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 440.199,75</td>
+        </tr>
+        <tr>
+          <td>15/05/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 380.472,80</td>
+        </tr>
+        <tr>
+          <td>19/05/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 440.199,75</td>
+        </tr>
+        <tr>
+          <td>28/05/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 85.064,30</td>
+        </tr>
+        <tr>
+          <td>01/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 85.064,30</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 310.290,34</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 240.347,42</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 141.155,12</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 141.155,12</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 20.970,24</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 5.223,15</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 4.029,76</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 3.060,34</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 3.041,59</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 2.663,42</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 156,24</td>
+        </tr>
+        <tr>
+          <td>03/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 18,75</td>
+        </tr>
+        <tr>
+          <td>09/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 91.066,50</td>
+        </tr>
+        <tr>
+          <td>15/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 11.462,34</td>
+        </tr>
+        <tr>
+          <td>16/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 17.126,29</td>
+        </tr>
+        <tr>
+          <td>18/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 13.633,23</td>
+        </tr>
+        <tr>
+          <td>23/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 1.361,93</td>
+        </tr>
+        <tr>
+          <td>24/06/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 1.365,36</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 558.148,75</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 219.761,97</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 98.152,45</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 77.131,68</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 73.994,84</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 10.454,36</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 9.295,91</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 8.439,59</td>
+        </tr>
+        <tr>
+          <td>26/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 1.790,67</td>
+        </tr>
+        <tr>
+          <td>29/06/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 32.175,26</td>
+        </tr>
+        <tr>
+          <td>01/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 135.576,28</td>
+        </tr>
+        <tr>
+          <td>02/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 632.768,99</td>
+        </tr>
+        <tr>
+          <td>02/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 1.365,36</td>
+        </tr>
+        <tr>
+          <td>03/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 135.576,28</td>
+        </tr>
+        <tr>
+          <td>03/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 91.262,41</td>
+        </tr>
+        <tr>
+          <td>09/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 1,13</td>
+        </tr>
+        <tr>
+          <td>13/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 7.414,20</td>
+        </tr>
+        <tr>
+          <td>13/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 1,13</td>
+        </tr>
+        <tr>
+          <td>15/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 343.631,62</td>
+        </tr>
+        <tr>
+          <td>17/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 343.631,62</td>
+        </tr>
+        <tr>
+          <td>17/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 0,12</td>
+        </tr>
+        <tr>
+          <td>20/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 343.631,62</td>
+        </tr>
+        <tr>
+          <td>21/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 0,12</td>
+        </tr>
+        <tr>
+          <td>22/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 343.631,62</td>
+        </tr>
+        <tr>
+          <td>23/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 173.872,12</td>
+        </tr>
+        <tr>
+          <td>23/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 24.599,98</td>
+        </tr>
+        <tr>
+          <td>24/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 116.799,08</td>
+        </tr>
+        <tr>
+          <td>24/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 63.234,31</td>
+        </tr>
+        <tr>
+          <td>27/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 5.000,15</td>
+        </tr>
+        <tr>
+          <td>28/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 174.889,26</td>
+        </tr>
+        <tr>
+          <td>28/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 63.234,31</td>
+        </tr>
+        <tr>
+          <td>29/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 928.989,36</td>
+        </tr>
+        <tr>
+          <td>29/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 116.799,08</td>
+        </tr>
+        <tr>
+          <td>29/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 5.000,15</td>
+        </tr>
+        <tr>
+          <td>30/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 174.889,26</td>
+        </tr>
+        <tr>
+          <td>30/07/2026</td>
+          <td><span class="tipo-badge tipo-bloqueio">BLOQUEIO</span></td>
+          <td class="text-right">R$ 155.092,77</td>
+        </tr>
+        <tr>
+          <td>30/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 127.517,87</td>
+        </tr>
+        <tr>
+          <td>30/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 33.808,33</td>
+        </tr>
+        <tr>
+          <td>30/07/2026</td>
+          <td><span class="tipo-badge tipo-transferencia">TRANSFERENCIA</span></td>
+          <td class="text-right">R$ 24.599,98</td>
+        </tr>
+        <tr>
+          <td>30/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 10.120,00</td>
+        </tr>
+        <tr>
+          <td>30/07/2026</td>
+          <td><span class="tipo-badge tipo-desbloqueio">DESBLOQUEIO</span></td>
+          <td class="text-right">R$ 472,28</td>
         </tr>
           </tbody>
         </table>
