@@ -12414,17 +12414,43 @@
       "data_email": "Tue, 4 Aug 2026 08:01:31 +0000",
       "contrato": "CASAS BAHIA I",
       "subject": "Escrow Advanced - TRANSFERÊNCIA JUDICIAL"
+    },
+    {
+      "id": "19fd0f13c8ef9cac",
+      "tipo": "TRANSFERÊNCIA",
+      "processo": "00004461620245070010",
+      "vara": "000011289",
+      "ag_conta": "8541/83571-9",
+      "valor": 61413.84,
+      "valor_display": "R$ 61.413,84",
+      "data_efetivacao": "2026-08-03",
+      "data_email": "Wed, 5 Aug 2026 08:01:37 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - TRANSFERÊNCIA JUDICIAL"
+    },
+    {
+      "id": "19fd0f13bb5c1761",
+      "tipo": "TRANSFERÊNCIA",
+      "processo": "10002716420225020446",
+      "vara": "000017567",
+      "ag_conta": "8541/83571-9",
+      "valor": 16700.0,
+      "valor_display": "R$ 16.700,00",
+      "data_efetivacao": "2026-08-03",
+      "data_email": "Wed, 5 Aug 2026 08:01:35 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - TRANSFERÊNCIA JUDICIAL"
     }
   ],
-  "last_update": "31/07/2026",
+  "last_update": "03/08/2026",
   "summary": {
     "total_bloqueado": 56178561.78,
     "total_desbloqueado": 16870541.42,
-    "total_transferido": 33531525.36,
-    "saldo_bloqueado_atual": 5776495.0,
-    "total_eventos": 955,
+    "total_transferido": 33609639.2,
+    "saldo_bloqueado_atual": 5698381.16,
+    "total_eventos": 957,
     "total_processos": 495,
-    "processos_ativos": 44,
+    "processos_ativos": 42,
     "processos": [
       {
         "processo": "00112010320215150101",
@@ -12803,24 +12829,6 @@
         "transferencias": []
       },
       {
-        "processo": "00004461620245070010",
-        "vara": "000011289",
-        "status": "BLOQUEADO",
-        "saldo_bloqueado": 61413.84,
-        "total_bloqueado": 61413.84,
-        "total_desbloqueado": 0,
-        "total_transferido": 0,
-        "bloqueios": [
-          {
-            "valor": 61413.84,
-            "data": "2026-06-26",
-            "id": "19f178c6cdd58d89"
-          }
-        ],
-        "desbloqueios": [],
-        "transferencias": []
-      },
-      {
         "processo": "00247422320225240003",
         "vara": "000013396",
         "status": "BLOQUEADO",
@@ -12951,24 +12959,6 @@
             "id": "19ed49a0883b5026"
           }
         ]
-      },
-      {
-        "processo": "10002716420225020446",
-        "vara": "000017567",
-        "status": "BLOQUEADO",
-        "saldo_bloqueado": 16700.0,
-        "total_bloqueado": 16700.0,
-        "total_desbloqueado": 0,
-        "total_transferido": 0,
-        "bloqueios": [
-          {
-            "valor": 16700.0,
-            "data": "2026-07-30",
-            "id": "19fbc577049aa80e"
-          }
-        ],
-        "desbloqueios": [],
-        "transferencias": []
       },
       {
         "processo": "00860581720258050001",
@@ -22769,6 +22759,30 @@
         "transferencias": []
       },
       {
+        "processo": "00004461620245070010",
+        "vara": "000011289",
+        "status": "TRANSFERIDO",
+        "saldo_bloqueado": 0.0,
+        "total_bloqueado": 61413.84,
+        "total_desbloqueado": 0,
+        "total_transferido": 61413.84,
+        "bloqueios": [
+          {
+            "valor": 61413.84,
+            "data": "2026-06-26",
+            "id": "19f178c6cdd58d89"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": [
+          {
+            "valor": 61413.84,
+            "data": "2026-08-03",
+            "id": "19fd0f13c8ef9cac"
+          }
+        ]
+      },
+      {
         "processo": "00013415820245130026",
         "vara": "000013122",
         "status": "TRANSFERIDO",
@@ -23657,6 +23671,30 @@
         ]
       },
       {
+        "processo": "10002716420225020446",
+        "vara": "000017567",
+        "status": "TRANSFERIDO",
+        "saldo_bloqueado": 0.0,
+        "total_bloqueado": 16700.0,
+        "total_desbloqueado": 0,
+        "total_transferido": 16700.0,
+        "bloqueios": [
+          {
+            "valor": 16700.0,
+            "data": "2026-07-30",
+            "id": "19fbc577049aa80e"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": [
+          {
+            "valor": 16700.0,
+            "data": "2026-08-03",
+            "id": "19fd0f13bb5c1761"
+          }
+        ]
+      },
+      {
         "processo": "00114621220235150096",
         "vara": "000021626",
         "status": "TRANSFERIDO",
@@ -24121,17 +24159,17 @@
       }
     },
     "eventos_conciliados": 911,
-    "eventos_totais": 955,
+    "eventos_totais": 957,
     "lancamentos_totais": 988,
     "saldo_bloqueado_extrato": 3200444.16,
-    "saldo_bloqueado_emails": 5776495.0,
-    "divergencia_saldo": 2576050.84,
+    "saldo_bloqueado_emails": 5698381.16,
+    "divergencia_saldo": 2497937.0,
     "ponte": {
       "extrato": 3200444.16,
-      "so_email": -417672.31,
+      "so_email": -495786.15,
       "so_extrato": 3041384.63,
       "valores_divergentes": -47661.48,
-      "emails": 5776495.0
+      "emails": 5698381.16
     },
     "valores_divergentes": [
       {
@@ -24686,6 +24724,20 @@
         "vara": "000037333",
         "data": "2026-07-31",
         "valor": 5998.72
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "00004461620245070010",
+        "vara": "000011289",
+        "data": "2026-08-03",
+        "valor": 61413.84
+      },
+      {
+        "tipo": "TRANSFERENCIA",
+        "processo": "10002716420225020446",
+        "vara": "000017567",
+        "data": "2026-08-03",
+        "valor": 16700.0
       }
     ],
     "so_no_extrato": [
@@ -25078,7 +25130,7 @@
     "totais_so_email": {
       "BLOQUEIO": 9665147.29,
       "DESBLOQUEIO": 3509027.2,
-      "TRANSFERENCIA": 6573792.4
+      "TRANSFERENCIA": 6651906.24
     },
     "totais_so_extrato": {
       "BLOQUEIO": 3421765.98,
@@ -25169,11 +25221,11 @@
         "papel": "Conta Vinculada – Casas Bahia do Contrato de Alienação e Cessão Fiduciária de Ações (cl. 6.1). Detém de fato o Saldo Mínimo e varre o excedente para a conta livre da Casas Bahia (cl. 1.1 do Anexo I do Contrato de Custódia)",
         "monitorada": true,
         "prevista": true,
-        "eventos": 955,
-        "saldo_bloqueado": 5776495.0,
-        "total_transferido": 33531525.36,
+        "eventos": 957,
+        "saldo_bloqueado": 5698381.16,
+        "total_transferido": 33609639.2,
         "primeiro": "2026-04-07",
-        "ultimo": "2026-07-31"
+        "ultimo": "2026-08-03"
       },
       {
         "conta": "8541/83534-7",
