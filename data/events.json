@@ -12466,18 +12466,335 @@
       "data_email": "Fri, 7 Aug 2026 08:01:29 +0000",
       "contrato": "CASAS BAHIA I",
       "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe065408fe1294",
+      "tipo": "DESBLOQUEIO",
+      "processo": "00108136920225150003",
+      "vara": "000021973",
+      "ag_conta": "8541/83571-9",
+      "valor": 8855.2,
+      "valor_display": "R$ 8.855,20",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:02:37 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - DESBLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe06473c2ad031",
+      "tipo": "BLOQUEIO",
+      "processo": "00005409620255050102",
+      "vara": "000011895",
+      "ag_conta": "8541/83571-9",
+      "valor": 219295.18,
+      "valor_display": "R$ 219.295,18",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:44 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe06465be8826b",
+      "tipo": "BLOQUEIO",
+      "processo": "00007451120265100019",
+      "vara": "000016452",
+      "ag_conta": "8541/83571-9",
+      "valor": 17424.66,
+      "valor_display": "R$ 17.424,66",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:41 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe064631d79c95",
+      "tipo": "BLOQUEIO",
+      "processo": "00011345620255180003",
+      "vara": "000023980",
+      "ag_conta": "8541/83571-9",
+      "valor": 220371.45,
+      "valor_display": "R$ 220.371,45",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:42 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe06458ef3df21",
+      "tipo": "BLOQUEIO",
+      "processo": "00004179220215070002",
+      "vara": "000011720",
+      "ag_conta": "8541/83571-9",
+      "valor": 52798.81,
+      "valor_display": "R$ 52.798,81",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:38 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe064527ee6312",
+      "tipo": "BLOQUEIO",
+      "processo": "01016056520255010452",
+      "vara": "000008929",
+      "ag_conta": "8541/83571-9",
+      "valor": 66945.37,
+      "valor_display": "R$ 66.945,37",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:37 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe064462e41d42",
+      "tipo": "BLOQUEIO",
+      "processo": "00071137920268050001",
+      "vara": "000037332",
+      "ag_conta": "8541/83571-9",
+      "valor": 2513.62,
+      "valor_display": "R$ 2.513,62",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:34 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe06442dfd2f1f",
+      "tipo": "BLOQUEIO",
+      "processo": "07143847220258041000",
+      "vara": "000048360",
+      "ag_conta": "8541/83571-9",
+      "valor": 5577.21,
+      "valor_display": "R$ 5.577,21",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:33 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe0643322d1b5a",
+      "tipo": "BLOQUEIO",
+      "processo": "10005795120245020084",
+      "vara": "000017815",
+      "ag_conta": "8541/83571-9",
+      "valor": 44534.02,
+      "valor_display": "R$ 44.534,02",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:29 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe0642e8daa439",
+      "tipo": "BLOQUEIO",
+      "processo": "00111753520255030186",
+      "vara": "000014826",
+      "ag_conta": "8541/83571-9",
+      "valor": 93417.82,
+      "valor_display": "R$ 93.417,82",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:28 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe06423428061b",
+      "tipo": "BLOQUEIO",
+      "processo": "00164898820168190021",
+      "vara": "000007800",
+      "ag_conta": "8541/83571-9",
+      "valor": 8634.92,
+      "valor_display": "R$ 8.634,92",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:25 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe0641c7132269",
+      "tipo": "BLOQUEIO",
+      "processo": "00122567320255150060",
+      "vara": "000020655",
+      "ag_conta": "8541/83571-9",
+      "valor": 134303.05,
+      "valor_display": "R$ 134.303,05",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:24 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe064160730f68",
+      "tipo": "BLOQUEIO",
+      "processo": "00006828320205050132",
+      "vara": "000052858",
+      "ag_conta": "8541/83571-9",
+      "valor": 38130.24,
+      "valor_display": "R$ 38.130,24",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:22 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe0640f77c7c59",
+      "tipo": "BLOQUEIO",
+      "processo": "00133563520155150021",
+      "vara": "000020655",
+      "ag_conta": "8541/83571-9",
+      "valor": 10584.25,
+      "valor_display": "R$ 10.584,25",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:20 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe0640b79a283a",
+      "tipo": "BLOQUEIO",
+      "processo": "00010131520235100005",
+      "vara": "000016339",
+      "ag_conta": "8541/83571-9",
+      "valor": 119118.69,
+      "valor_display": "R$ 119.118,69",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:19 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe063f17d26e55",
+      "tipo": "BLOQUEIO",
+      "processo": "53470449620268090007",
+      "vara": "000039827",
+      "ag_conta": "8541/83571-9",
+      "valor": 2796.53,
+      "valor_display": "R$ 2.796,53",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:12 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe063ecf607953",
+      "tipo": "BLOQUEIO",
+      "processo": "00102513020265030011",
+      "vara": "000015798",
+      "ag_conta": "8541/83571-9",
+      "valor": 420306.93,
+      "valor_display": "R$ 420.306,93",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:11 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe063d889d587f",
+      "tipo": "BLOQUEIO",
+      "processo": "01813659520258050001",
+      "vara": "000037333",
+      "ag_conta": "8541/83571-9",
+      "valor": 8980.64,
+      "valor_display": "R$ 8.980,64",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:06 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe063d0043212d",
+      "tipo": "BLOQUEIO",
+      "processo": "00468404520268050001",
+      "vara": "000037338",
+      "ag_conta": "8541/83571-9",
+      "valor": 3767.6,
+      "valor_display": "R$ 3.767,60",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:04 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe063c8928b7e4",
+      "tipo": "BLOQUEIO",
+      "processo": "08022214220268190054",
+      "vara": "000013639",
+      "ag_conta": "8541/83571-9",
+      "valor": 1314.38,
+      "valor_display": "R$ 1.314,38",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:01 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe063c0361af19",
+      "tipo": "BLOQUEIO",
+      "processo": "01822033820258050001",
+      "vara": "000037338",
+      "ag_conta": "8541/83571-9",
+      "valor": 7791.07,
+      "valor_display": "R$ 7.791,07",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:01:00 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe063bbcbb41ab",
+      "tipo": "BLOQUEIO",
+      "processo": "10009167620205020473",
+      "vara": "000017517",
+      "ag_conta": "8541/83571-9",
+      "valor": 2291882.58,
+      "valor_display": "R$ 2.291.882,58",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:00:58 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
+    },
+    {
+      "id": "19fe063b37c893e6",
+      "tipo": "BLOQUEIO",
+      "processo": "00202928120265040123",
+      "vara": "000010074",
+      "ag_conta": "8541/83571-9",
+      "valor": 52887.84,
+      "valor_display": "R$ 52.887,84",
+      "data_efetivacao": "2026-08-06",
+      "data_email": "Sat, 8 Aug 2026 08:00:55 +0000",
+      "contrato": "CASAS BAHIA I",
+      "subject": "Escrow Advanced - BLOQUEIO JUDICIAL"
     }
   ],
-  "last_update": "05/08/2026",
+  "last_update": "06/08/2026",
   "summary": {
-    "total_bloqueado": 56690365.59,
-    "total_desbloqueado": 16954075.45,
+    "total_bloqueado": 60513742.45,
+    "total_desbloqueado": 16962930.65,
     "total_transferido": 33609639.2,
-    "saldo_bloqueado_atual": 6126650.94,
-    "total_eventos": 959,
-    "total_processos": 496,
-    "processos_ativos": 42,
+    "saldo_bloqueado_atual": 9941172.6,
+    "total_eventos": 982,
+    "total_processos": 518,
+    "processos_ativos": 63,
     "processos": [
+      {
+        "processo": "10009167620205020473",
+        "vara": "000017517",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 2291882.58,
+        "total_bloqueado": 2291882.58,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 2291882.58,
+            "data": "2026-08-06",
+            "id": "19fe063bbcbb41ab"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
       {
         "processo": "00112010320215150101",
         "vara": "000021656",
@@ -12568,6 +12885,24 @@
             "valor": 240347.42,
             "data": "2026-05-25",
             "id": "19e6873b17a757c7"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00102513020265030011",
+        "vara": "000015798",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 420306.93,
+        "total_bloqueado": 420306.93,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 420306.93,
+            "data": "2026-08-06",
+            "id": "19fe063ecf607953"
           }
         ],
         "desbloqueios": [],
@@ -12699,6 +13034,24 @@
         "transferencias": []
       },
       {
+        "processo": "00011345620255180003",
+        "vara": "000023980",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 220371.45,
+        "total_bloqueado": 220371.45,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 220371.45,
+            "data": "2026-08-06",
+            "id": "19fe064631d79c95"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
         "processo": "01008091620215010064",
         "vara": "000009297",
         "status": "BLOQUEADO",
@@ -12711,6 +13064,24 @@
             "valor": 219761.97,
             "data": "2026-05-25",
             "id": "19e68744beaa1645"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00005409620255050102",
+        "vara": "000011895",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 219295.18,
+        "total_bloqueado": 219295.18,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 219295.18,
+            "data": "2026-08-06",
+            "id": "19fe06473c2ad031"
           }
         ],
         "desbloqueios": [],
@@ -12753,6 +13124,42 @@
         "transferencias": []
       },
       {
+        "processo": "00122567320255150060",
+        "vara": "000020655",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 134303.05,
+        "total_bloqueado": 134303.05,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 134303.05,
+            "data": "2026-08-06",
+            "id": "19fe0641c7132269"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00010131520235100005",
+        "vara": "000016339",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 119118.69,
+        "total_bloqueado": 119118.69,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 119118.69,
+            "data": "2026-08-06",
+            "id": "19fe0640b79a283a"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
         "processo": "10023978120255020608",
         "vara": "000016933",
         "status": "BLOQUEADO",
@@ -12765,6 +13172,24 @@
             "valor": 106001.59,
             "data": "2026-06-08",
             "id": "19eb08cb8909b6a5"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00111753520255030186",
+        "vara": "000014826",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 93417.82,
+        "total_bloqueado": 93417.82,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 93417.82,
+            "data": "2026-08-06",
+            "id": "19fe0642e8daa439"
           }
         ],
         "desbloqueios": [],
@@ -12855,6 +13280,60 @@
         "transferencias": []
       },
       {
+        "processo": "01016056520255010452",
+        "vara": "000008929",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 66945.37,
+        "total_bloqueado": 66945.37,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 66945.37,
+            "data": "2026-08-06",
+            "id": "19fe064527ee6312"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00202928120265040123",
+        "vara": "000010074",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 52887.84,
+        "total_bloqueado": 52887.84,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 52887.84,
+            "data": "2026-08-06",
+            "id": "19fe063b37c893e6"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00004179220215070002",
+        "vara": "000011720",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 52798.81,
+        "total_bloqueado": 52798.81,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 52798.81,
+            "data": "2026-08-06",
+            "id": "19fe06458ef3df21"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
         "processo": "00247422320225240003",
         "vara": "000013396",
         "status": "BLOQUEADO",
@@ -12867,6 +13346,42 @@
             "valor": 46007.83,
             "data": "2026-07-07",
             "id": "19f45e54310f3661"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "10005795120245020084",
+        "vara": "000017815",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 44534.02,
+        "total_bloqueado": 44534.02,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 44534.02,
+            "data": "2026-08-06",
+            "id": "19fe0643322d1b5a"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00006828320205050132",
+        "vara": "000052858",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 38130.24,
+        "total_bloqueado": 38130.24,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 38130.24,
+            "data": "2026-08-06",
+            "id": "19fe064160730f68"
           }
         ],
         "desbloqueios": [],
@@ -12957,6 +13472,24 @@
         "transferencias": []
       },
       {
+        "processo": "00007451120265100019",
+        "vara": "000016452",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 17424.66,
+        "total_bloqueado": 17424.66,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 17424.66,
+            "data": "2026-08-06",
+            "id": "19fe06465be8826b"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
         "processo": "10019263220255020231",
         "vara": "000017849",
         "status": "BLOQUEADO",
@@ -13005,6 +13538,24 @@
         "transferencias": []
       },
       {
+        "processo": "00133563520155150021",
+        "vara": "000020655",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 10584.25,
+        "total_bloqueado": 10584.25,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 10584.25,
+            "data": "2026-08-06",
+            "id": "19fe0640f77c7c59"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
         "processo": "00099226120258050103",
         "vara": "000037821",
         "status": "BLOQUEADO",
@@ -13041,18 +13592,36 @@
         "transferencias": []
       },
       {
-        "processo": "00108136920225150003",
-        "vara": "000021973",
+        "processo": "01813659520258050001",
+        "vara": "000037333",
         "status": "BLOQUEADO",
-        "saldo_bloqueado": 8855.2,
-        "total_bloqueado": 8855.2,
+        "saldo_bloqueado": 8980.64,
+        "total_bloqueado": 8980.64,
         "total_desbloqueado": 0,
         "total_transferido": 0,
         "bloqueios": [
           {
-            "valor": 8855.2,
-            "data": "2026-06-08",
-            "id": "19eb08d3cbcaf586"
+            "valor": 8980.64,
+            "data": "2026-08-06",
+            "id": "19fe063d889d587f"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00164898820168190021",
+        "vara": "000007800",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 8634.92,
+        "total_bloqueado": 8634.92,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 8634.92,
+            "data": "2026-08-06",
+            "id": "19fe06423428061b"
           }
         ],
         "desbloqueios": [],
@@ -13077,6 +13646,24 @@
         "transferencias": []
       },
       {
+        "processo": "01822033820258050001",
+        "vara": "000037338",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 7791.07,
+        "total_bloqueado": 7791.07,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 7791.07,
+            "data": "2026-08-06",
+            "id": "19fe063c0361af19"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
         "processo": "00115825720235150063",
         "vara": "000020934",
         "status": "BLOQUEADO",
@@ -13094,6 +13681,24 @@
             "valor": 3060.34,
             "data": "2026-05-25",
             "id": "19e6873a619151e3"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "07143847220258041000",
+        "vara": "000048360",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 5577.21,
+        "total_bloqueado": 5577.21,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 5577.21,
+            "data": "2026-08-06",
+            "id": "19fe06442dfd2f1f"
           }
         ],
         "desbloqueios": [],
@@ -13183,6 +13788,24 @@
         "transferencias": []
       },
       {
+        "processo": "00468404520268050001",
+        "vara": "000037338",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 3767.6,
+        "total_bloqueado": 3767.6,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 3767.6,
+            "data": "2026-08-06",
+            "id": "19fe063d0043212d"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
         "processo": "02359994120258050001",
         "vara": "000037333",
         "status": "BLOQUEADO",
@@ -13237,6 +13860,42 @@
         "transferencias": []
       },
       {
+        "processo": "53470449620268090007",
+        "vara": "000039827",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 2796.53,
+        "total_bloqueado": 2796.53,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 2796.53,
+            "data": "2026-08-06",
+            "id": "19fe063f17d26e55"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "00071137920268050001",
+        "vara": "000037332",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 2513.62,
+        "total_bloqueado": 2513.62,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 2513.62,
+            "data": "2026-08-06",
+            "id": "19fe064462e41d42"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
         "processo": "40099410520268260224",
         "vara": "000043414",
         "status": "BLOQUEADO",
@@ -13249,6 +13908,24 @@
             "valor": 1790.67,
             "data": "2026-06-19",
             "id": "19ef37fd11d95bed"
+          }
+        ],
+        "desbloqueios": [],
+        "transferencias": []
+      },
+      {
+        "processo": "08022214220268190054",
+        "vara": "000013639",
+        "status": "BLOQUEADO",
+        "saldo_bloqueado": 1314.38,
+        "total_bloqueado": 1314.38,
+        "total_desbloqueado": 0,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 1314.38,
+            "data": "2026-08-06",
+            "id": "19fe063c8928b7e4"
           }
         ],
         "desbloqueios": [],
@@ -20975,6 +21652,30 @@
         "transferencias": []
       },
       {
+        "processo": "00108136920225150003",
+        "vara": "000021973",
+        "status": "DESBLOQUEADO",
+        "saldo_bloqueado": 0.0,
+        "total_bloqueado": 8855.2,
+        "total_desbloqueado": 8855.2,
+        "total_transferido": 0,
+        "bloqueios": [
+          {
+            "valor": 8855.2,
+            "data": "2026-06-08",
+            "id": "19eb08d3cbcaf586"
+          }
+        ],
+        "desbloqueios": [
+          {
+            "valor": 8855.2,
+            "data": "2026-08-06",
+            "id": "19fe065408fe1294"
+          }
+        ],
+        "transferencias": []
+      },
+      {
         "processo": "00205584420255040013",
         "vara": "000010669",
         "status": "DESBLOQUEADO",
@@ -24209,17 +24910,17 @@
       }
     },
     "eventos_conciliados": 911,
-    "eventos_totais": 959,
+    "eventos_totais": 982,
     "lancamentos_totais": 988,
     "saldo_bloqueado_extrato": 3200444.16,
-    "saldo_bloqueado_emails": 6126650.94,
-    "divergencia_saldo": 2926206.78,
+    "saldo_bloqueado_emails": 9941172.6,
+    "divergencia_saldo": 6740728.44,
     "ponte": {
       "extrato": 3200444.16,
-      "so_email": -67516.37,
+      "so_email": 3747005.29,
       "so_extrato": 3041384.63,
       "valores_divergentes": -47661.48,
-      "emails": 6126650.94
+      "emails": 9941172.6
     },
     "valores_divergentes": [
       {
@@ -24802,6 +25503,167 @@
         "vara": "000009297",
         "data": "2026-08-05",
         "valor": 83534.03
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10009167620205020473",
+        "vara": "000017517",
+        "data": "2026-08-06",
+        "valor": 2291882.58
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00102513020265030011",
+        "vara": "000015798",
+        "data": "2026-08-06",
+        "valor": 420306.93
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00011345620255180003",
+        "vara": "000023980",
+        "data": "2026-08-06",
+        "valor": 220371.45
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00005409620255050102",
+        "vara": "000011895",
+        "data": "2026-08-06",
+        "valor": 219295.18
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00122567320255150060",
+        "vara": "000020655",
+        "data": "2026-08-06",
+        "valor": 134303.05
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00010131520235100005",
+        "vara": "000016339",
+        "data": "2026-08-06",
+        "valor": 119118.69
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00111753520255030186",
+        "vara": "000014826",
+        "data": "2026-08-06",
+        "valor": 93417.82
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "01016056520255010452",
+        "vara": "000008929",
+        "data": "2026-08-06",
+        "valor": 66945.37
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00202928120265040123",
+        "vara": "000010074",
+        "data": "2026-08-06",
+        "valor": 52887.84
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00004179220215070002",
+        "vara": "000011720",
+        "data": "2026-08-06",
+        "valor": 52798.81
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "10005795120245020084",
+        "vara": "000017815",
+        "data": "2026-08-06",
+        "valor": 44534.02
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00006828320205050132",
+        "vara": "000052858",
+        "data": "2026-08-06",
+        "valor": 38130.24
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00007451120265100019",
+        "vara": "000016452",
+        "data": "2026-08-06",
+        "valor": 17424.66
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00133563520155150021",
+        "vara": "000020655",
+        "data": "2026-08-06",
+        "valor": 10584.25
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "01813659520258050001",
+        "vara": "000037333",
+        "data": "2026-08-06",
+        "valor": 8980.64
+      },
+      {
+        "tipo": "DESBLOQUEIO",
+        "processo": "00108136920225150003",
+        "vara": "000021973",
+        "data": "2026-08-06",
+        "valor": 8855.2
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00164898820168190021",
+        "vara": "000007800",
+        "data": "2026-08-06",
+        "valor": 8634.92
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "01822033820258050001",
+        "vara": "000037338",
+        "data": "2026-08-06",
+        "valor": 7791.07
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "07143847220258041000",
+        "vara": "000048360",
+        "data": "2026-08-06",
+        "valor": 5577.21
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00468404520268050001",
+        "vara": "000037338",
+        "data": "2026-08-06",
+        "valor": 3767.6
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "53470449620268090007",
+        "vara": "000039827",
+        "data": "2026-08-06",
+        "valor": 2796.53
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "00071137920268050001",
+        "vara": "000037332",
+        "data": "2026-08-06",
+        "valor": 2513.62
+      },
+      {
+        "tipo": "BLOQUEIO",
+        "processo": "08022214220268190054",
+        "vara": "000013639",
+        "data": "2026-08-06",
+        "valor": 1314.38
       }
     ],
     "so_no_extrato": [
@@ -25192,8 +26054,8 @@
       }
     ],
     "totais_so_email": {
-      "BLOQUEIO": 10176951.1,
-      "DESBLOQUEIO": 3592561.23,
+      "BLOQUEIO": 14000327.96,
+      "DESBLOQUEIO": 3601416.43,
       "TRANSFERENCIA": 6651906.24
     },
     "totais_so_extrato": {
@@ -25285,11 +26147,11 @@
         "papel": "Conta Vinculada – Casas Bahia do Contrato de Alienação e Cessão Fiduciária de Ações (cl. 6.1). Detém de fato o Saldo Mínimo e varre o excedente para a conta livre da Casas Bahia (cl. 1.1 do Anexo I do Contrato de Custódia)",
         "monitorada": true,
         "prevista": true,
-        "eventos": 959,
-        "saldo_bloqueado": 6126650.94,
+        "eventos": 982,
+        "saldo_bloqueado": 9941172.6,
         "total_transferido": 33609639.2,
         "primeiro": "2026-04-07",
-        "ultimo": "2026-08-05"
+        "ultimo": "2026-08-06"
       },
       {
         "conta": "8541/83534-7",
